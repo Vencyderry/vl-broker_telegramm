@@ -21,6 +21,7 @@ async def currency_cq(cq: CallbackQuery) -> None:
     try:
         message = cq.message.unwrap().v
 
+
         currency = ctx.get("currency")
 
         await delete_mess(message.chat.id)
