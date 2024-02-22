@@ -6,7 +6,10 @@ from tools import decode
 from loop_wrapper import rules_notification, application_notification
 from operations import *
 from models import *
-from middlewares import RegistrationMiddleware, MessageDeleteMiddleware, MessageRouterMiddleware
+from middlewares import (RegistrationMiddleware,
+                         MessageDeleteMiddleware,
+                         MessageRouterMiddleware,
+                         JoinChatMiddleware)
 
 from telegrinder.modules import logger
 
@@ -62,5 +65,6 @@ async def application_notification_handler() -> None:
 bot.on.message.middlewares.append(MessageRouterMiddleware())
 bot.on.message.middlewares.append(RegistrationMiddleware())
 bot.on.message.middlewares.append(MessageDeleteMiddleware())
+bot.on.message.middlewares.append(JoinChatMiddleware())
 
 bot.run_forever()

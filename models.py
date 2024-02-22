@@ -48,7 +48,9 @@ class User(BaseModel):
     group = TextField(default='Default')
 
     country = TextField(default='Unknown')
+
     registration_date = DateTimeField(default=0)
+    join_chat_date = DateTimeField(default=0)
 
     last_synch = IntegerField(default=0)
 
@@ -61,6 +63,6 @@ if __name__ == "__main__":
 
     migrator = SqliteMigrator(db)
     migrate(
-        migrator.add_column("system", "price_pdf", TextField(default=''))
+        migrator.add_column("user", "join_chat_date", DateTimeField(default=0))
     )
 

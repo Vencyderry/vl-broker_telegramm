@@ -1,22 +1,21 @@
-from client import api
 from telegrinder import InlineKeyboard, InlineButton, Dispatch, Message
 from telegrinder.rules import Text, IsPrivate
-from tools import ExecutorType, DispatchExecutor
+
+from client import api
+from permissions_store import is_admin
+from handlers.executor import ExecutorType, DispatchExecutor
 
 dp = Dispatch()
 
 
-@dp.message(Command(["pin"]))
-async def start(message: Message, args: list[str] = None) -> None:
+@dp.message(Text("/pin"))
+async def pin_message(message: Message) -> None:
 
-    if not await is_admin(message.from_.id):
+    if not is_admin(message.from_.unwrap().id) and not is_sr_admin(message.from_.unwrap().id):
         await message.answer(ERROR_PERMISSION)
         return
 
-    pattern = args if args is None else args[0]
-
-
-    if pattern == "pattern1":
+    if "pattern1" in message.text:
 
         message_pin = "📌Оставить заявку на таможенное оформление:"
         keyboard_application = (

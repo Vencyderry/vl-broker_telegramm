@@ -5,7 +5,7 @@ from handlers.executor import (ExecutorType,
                                DispatchExecutor,
                                target_search,
                                TargetCommandExecutor)
-from config import *
+from patterns import *
 from permissions_store import is_admin, is_sr_admin
 
 from telegrinder import InlineKeyboard, InlineButton, Dispatch, Message

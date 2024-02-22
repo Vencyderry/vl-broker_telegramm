@@ -3,7 +3,7 @@ import traceback
 from client import api
 from handlers.executor import ExecutorType, DispatchExecutor
 from permissions_store import is_admin
-from config import ERROR_PERMISSION
+from patterns import ERROR_PERMISSION
 from operations import get_system, get_users_all
 from tools import digit
 

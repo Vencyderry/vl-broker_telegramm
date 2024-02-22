@@ -1,5 +1,6 @@
 from client import api, tz
 from config import *
+from patterns import *
 import datetime
 
 

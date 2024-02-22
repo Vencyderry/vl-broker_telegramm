@@ -10,7 +10,7 @@ from client import api, fmt
 from tools import save_mess, delete_mess
 from handlers.executor import ExecutorType, DispatchExecutor
 from operations import get_system
-from config import ERROR_PERMISSION
+from patterns import ERROR_PERMISSION
 from permissions_store import is_admin, is_sr_admin
 
 dp = Dispatch()
