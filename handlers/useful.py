@@ -24,9 +24,8 @@ async def useful(cq: CallbackQuery) -> None:
         message = cq.message.unwrap().v
 
         await delete_mess(message.chat.id)
-        response = await message.answer(
-            text=f"📌Полезные опции:\nhttps://youtu.be/nS-PQmCEB_k",
-            reply_markup=kb)
+        response = await api.send_message(text=f"📌Полезные опции:\nhttps://youtu.be/nS-PQmCEB_k",
+                                          chat_id=message.chat.id)
         await save_mess(response.unwrap())
 
     except Exception:
