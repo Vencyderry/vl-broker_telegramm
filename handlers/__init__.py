@@ -1,4 +1,4 @@
-from . import start, currency, calculator, price, application, clear
+from . import start, currency, calculator, price, application, clear, useful
 from . import admins, calculator
 
 single_handlers = [
@@ -6,7 +6,8 @@ single_handlers = [
     start.dp,
     price.dp,
     application.dp,
-    clear.dp
+    clear.dp,
+    useful.dp
 ]
 
 groups_handlers = [

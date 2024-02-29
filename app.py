@@ -3,13 +3,14 @@ import traceback
 from client import bot, client, ctx
 from handlers import handlers
 from tools import decode
-from loop_wrapper import rules_notification, application_notification
+from loop_wrapper import rules_notification, application_notification, calculator_notification
 from operations import *
 from models import *
 from middlewares import (RegistrationMiddleware,
                          MessageDeleteMiddleware,
                          MessageRouterMiddleware,
-                         JoinChatMiddleware)
+                         JoinChatMiddleware
+                         )
 
 from telegrinder.modules import logger
 
@@ -56,6 +57,11 @@ async def currency_handler() -> None:
 @bot.loop_wrapper.interval(seconds=60)
 async def rules_notification_handler() -> None:
     await rules_notification.chat_rules_loop()
+
+
+@bot.loop_wrapper.interval(seconds=60)
+async def calculator_notification_handler() -> None:
+    await calculator_notification.calculator_loop()
 
 
 @bot.loop_wrapper.interval(seconds=60)

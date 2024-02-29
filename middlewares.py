@@ -8,7 +8,8 @@ from telegrinder.bot import Context
 from telegrinder.modules import logger
 
 from config import USERS_CHAT
-from client import api
+from patterns import GREETING_JOIN_CHAT
+from client import api, fmt
 from models import User
 from operations import *
 from tools import save_mess
@@ -18,16 +19,23 @@ from client import ctx, tz
 class JoinChatMiddleware(ABCMiddleware[Message]):
     async def pre(self, event: Message, ctx: Context) -> None:
 
-        if event.chat.type == "supergroup":
+        if event.chat.type in ["supergroup", "group"]:
             if event.chat.id == USERS_CHAT:
                 if event.new_chat_members is not Nothing:
                     user_join = event.new_chat_members.unwrap()[0]
                     if not user_join.is_bot:
-                        await api.send_message(text=GREETING_JOIN_CHAT,
-                                               chat_id=user_join,
-                                               )
-                        user = get_user(User.tgid, user_join)
+
+                        try:
+                            await api.send_message(text=GREETING_JOIN_CHAT,
+                                                   chat_id=user_join.id,
+                                                   parse_mode=fmt.PARSE_MODE
+                                                   )
+                        except:
+                            pass
+
+                        user = get_user(User.tgid, user_join.id)
                         user.join_chat_date = time.time()
+                        user.save()
 
 
 class MessageRouterMiddleware(ABCMiddleware[Message]):

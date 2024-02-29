@@ -16,6 +16,7 @@ kb = (
     .add(InlineButton("Открыть прайс-лист 2024", callback_data="price")).row()
     .add(InlineButton("Узнать курс валют", callback_data="currency")).row()
     .add(InlineButton("Открыть калькулятор", callback_data="calculator")).row()
+    .add(InlineButton("Полезное", callback_data="useful")).row()
     .add(InlineButton("Перейти в чат VL-BROKER", url="https://t.me/+k9w6qxLAOiEwMWJi"))
 ).get_markup()
 
