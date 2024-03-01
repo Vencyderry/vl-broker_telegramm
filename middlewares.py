@@ -1,19 +1,18 @@
-import datetime
-import time
 import traceback
 
+from telegrinder import InlineKeyboard, InlineButton
 from telegrinder import ABCMiddleware, Message
 from telegrinder.types import Nothing
-from telegrinder.bot import Context
 from telegrinder.modules import logger
 
 from config import USERS_CHAT
 from patterns import GREETING_JOIN_CHAT
 from client import api, fmt
-from models import User
 from operations import *
 from tools import save_mess
-from client import ctx, tz
+
+
+
 
 
 class JoinChatMiddleware(ABCMiddleware[Message]):
@@ -26,9 +25,15 @@ class JoinChatMiddleware(ABCMiddleware[Message]):
                     if not user_join.is_bot:
 
                         try:
+                            keyboard_rules = (
+                                InlineKeyboard()
+                                .add(InlineButton("Правила чата", callback_data="rules"))
+                            ).get_markup()
+
                             await api.send_message(text=GREETING_JOIN_CHAT,
                                                    chat_id=user_join.id,
-                                                   parse_mode=fmt.PARSE_MODE
+                                                   parse_mode=fmt.PARSE_MODE,
+                                                   reply_markup=keyboard_rules
                                                    )
                         except:
                             pass
