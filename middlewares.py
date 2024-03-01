@@ -12,9 +12,6 @@ from operations import *
 from tools import save_mess
 
 
-
-
-
 class JoinChatMiddleware(ABCMiddleware[Message]):
     async def pre(self, event: Message, ctx: Context) -> None:
 

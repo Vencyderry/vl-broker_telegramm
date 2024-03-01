@@ -1,5 +1,18 @@
-from . import start, currency, calculator, price, application, clear, useful
-from . import admins, calculator
+from . import (
+    start,
+    currency,
+    calculator,
+    price,
+    application,
+    clear,
+    useful,
+    rules
+)
+
+from . import (
+    admins,
+    calculator
+)
 
 single_handlers = [
     currency.dp,
@@ -7,7 +20,8 @@ single_handlers = [
     price.dp,
     application.dp,
     clear.dp,
-    useful.dp
+    useful.dp,
+    rules.dp
 ]
 
 groups_handlers = [
