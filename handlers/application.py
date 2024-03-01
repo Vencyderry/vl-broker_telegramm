@@ -184,7 +184,7 @@ async def part_number(message: Message) -> None:
         ).get_markup()
 
         if from_.username == Nothing:
-            username = "id" + from_.id
+            username = "Неопределён"
         else:
             username = from_.username.unwrap()
 
