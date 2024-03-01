@@ -20,7 +20,7 @@ class JoinChatMiddleware(ABCMiddleware[Message]):
     async def pre(self, event: Message, ctx: Context) -> None:
 
         if event.chat.type in ["supergroup", "group"]:
-            if event.chat.id == USERS_CHAT:
+            if event.chat.id == int(USERS_CHAT):
                 if event.new_chat_members is not Nothing:
                     user_join = event.new_chat_members.unwrap()[0]
                     if not user_join.is_bot:
