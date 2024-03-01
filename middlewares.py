@@ -36,8 +36,9 @@ class JoinChatMiddleware(ABCMiddleware[Message]):
                             pass
 
                         user = get_user(User.tgid, user_join.id)
-                        user.join_chat_date = time.time()
-                        user.save()
+                        if user is not None:
+                            user.join_chat_date = time.time()
+                            user.save()
 
 
 class MessageRouterMiddleware(ABCMiddleware[Message]):
