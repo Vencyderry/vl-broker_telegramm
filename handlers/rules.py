@@ -53,7 +53,7 @@ async def rules_message(message: Message) -> None:
         now = time.time()
         if now < user.cooldown_rules:
             response = await message.answer(ERROR_COOLDOWN_RULES)
-            await asyncio.sleep(3)
+            await asyncio.sleep(1.5)
             await api.delete_messages(chat_id=message.chat.id,
                                       message_ids=[message.message_id, response.unwrap().message_id])
             return
@@ -95,3 +95,29 @@ async def update_keyboard(message: Message) -> None:
         executor_update_keyboard.traceback = traceback.format_exc()
     finally:
         await executor_update_keyboard.logger(message)
+
+RULE_KEYBOARD_EMPTY = (Keyboard()).empty()
+
+
+executor_delete_keyboard = DispatchExecutor(title="delete_keyboard",
+                                            permission="operation.admin",
+                                            type_executor=ExecutorType.COMMAND
+                                            )
+
+
+@dp.message(Text(["/dltkeyboard"]))
+async def delete_keyboard(message: Message) -> None:
+    try:
+        if not is_admin(message.from_.unwrap().id):
+            await message.answer(ERROR_PERMISSION)
+            return
+
+        await message.answer(text="✅ Клавитура чата удалена.",
+                             reply_markup=RULE_KEYBOARD)
+
+
+
+    except Exception:
+        executor_delete_keyboard.traceback = traceback.format_exc()
+    finally:
+        await executor_delete_keyboard.logger(message)
