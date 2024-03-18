@@ -57,8 +57,10 @@ async def rules_message(message: Message) -> None:
             print(message.chat.id)
             print("\n")
             print(message.message_id)
-            response_dlt = await api.delete_message(chat_id=message.chat.id,
-                                                    message_id=int("-100" + str(message.message_id))) #response.unwrap().message_id
+            message_id = int("-100" + str(message.message_id))
+            print(message_id)
+            response_dlt = await api.delete_messages(chat_id=message.chat.id,
+                                                     message_ids=[message_id]) #response.unwrap().message_id
             print(response_dlt)
             return
         response = await api.send_message(text=MESSAGE_RULES,
