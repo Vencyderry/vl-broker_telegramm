@@ -3,7 +3,7 @@ import traceback
 import asyncio
 
 from telegrinder.rules import CallbackDataEq, Text
-from telegrinder import CallbackQuery, Dispatch, Message, Keyboard, Button
+from telegrinder import CallbackQuery, Dispatch, Message, Keyboard, Button, keyboard_remove
 
 from patterns import MESSAGE_RULES
 from client import api, fmt
@@ -113,7 +113,7 @@ async def delete_keyboard(message: Message) -> None:
             return
 
         await message.answer(text="✅ Клавитура чата удалена.",
-                             reply_markup=RULE_KEYBOARD)
+                             reply_markup=keyboard_remove())
 
 
 
