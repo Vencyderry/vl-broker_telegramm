@@ -55,7 +55,7 @@ async def rules_message(message: Message) -> None:
             response = await message.answer(ERROR_COOLDOWN_RULES)
             await asyncio.sleep(1.5)
             response_dlt = await api.delete_message(chat_id=message.chat.id,
-                                                    message_ids=message.message_id) #response.unwrap().message_id
+                                                    message_id=message.message_id) #response.unwrap().message_id
             print(response_dlt)
             return
         response = await api.send_message(text=MESSAGE_RULES,
