@@ -53,6 +53,7 @@ class User(BaseModel):
     join_chat_date = DateTimeField(default=0)
 
     last_synch = IntegerField(default=0)
+    cooldown_rules = DateTimeField(default=0)
 
     class Meta(BaseModel):
         db_table = "user"
@@ -63,6 +64,6 @@ if __name__ == "__main__":
 
     migrator = SqliteMigrator(db)
     migrate(
-        migrator.add_column("user", "join_chat_date", DateTimeField(default=0))
+        migrator.add_column("user", "cooldown_rules", DateTimeField(default=0))
     )
 

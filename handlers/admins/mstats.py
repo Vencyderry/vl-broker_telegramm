@@ -4,9 +4,10 @@ from client import api
 from handlers.executor import ExecutorType, DispatchExecutor
 from permissions_store import is_admin
 from patterns import ERROR_PERMISSION
-from operations import get_system, get_users_all
+from operations import get_system, get_users_all, get_user
+from models import User
 from tools import digit
-
+from config import USERS_CHAT
 from telegrinder import InlineKeyboard, InlineButton, Dispatch, Message
 from telegrinder.rules import Text, IsPrivate
 
@@ -22,6 +23,7 @@ executor = DispatchExecutor(title="mstatistics",
 @dp.message(Text(["/mstats"]))
 async def mstats(message: Message) -> None:
     try:
+
         if not is_admin(message.from_.unwrap().id):
             await message.answer(ERROR_PERMISSION)
             return
@@ -49,8 +51,14 @@ async def mstats(message: Message) -> None:
 🕰️ Топ промежутков времени активного использования бота:
 ▶ Coming soon
 """
+        # channel = await api.request_raw("getChannels", {"channel": USERS_CHAT}) #"-1001763293068"
+        # print(channel)
+        # dev = get_user(User.username, "vencyderry")
+        # memb = await api.get_chat_member("-1001763293068", 5296228892)
+        # memb = await api.get_chat_member("-1001763293068", 201492714)
+        # await api.send_message(-1002065953010, "Test message in channel")
+        # print(memb)
         await message.answer(stats)
-
     except Exception:
         executor.traceback = traceback.format_exc()
     finally:

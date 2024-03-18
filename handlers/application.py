@@ -236,6 +236,8 @@ async def edit_application_cq(cq: CallbackQuery) -> None:
         system.applications = apps
         system.save()
 
+    except KeyError:
+        await cq.answer("❌ Заявка не найдена.")
     except Exception:
         executor_application_accept.traceback = traceback.format_exc()
     finally:
