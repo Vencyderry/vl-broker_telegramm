@@ -200,12 +200,6 @@ async def part_number(message: Message) -> None:
                                              reply_markup=accept_keyboard
                                              )
 
-        system = get_system()
-        apps = decode(system.applications)
-        apps[f"application_{message_app.unwrap().message_id}"] = message_app.unwrap().text.unwrap()
-        system.applications = apps
-        system.save()
-
         await Application.delete(from_.id)
 
     except Exception:
@@ -224,17 +218,11 @@ async def edit_application_cq(cq: CallbackQuery) -> None:
     try:
         message = cq.message.unwrap().v
 
-        system = get_system()
-        apps = decode(system.applications)
-        application = apps[f"application_{message.message_id}"]
+        text_application = message.text.unwrap()
 
-        await api.edit_message_text(text=application.replace("Новая з", "З").replace("❗️", "✔️") + f"\n\n✅ Заявка принята в работу менеджером @{cq.from_.username.unwrap()}",
+        await api.edit_message_text(text=text_application.replace("Новая з", "З").replace("❗️", "✔️") + f"\n\n✅ Заявка принята в работу менеджером @{cq.from_.username.unwrap()}",
                                     message_id=message.message_id,
                                     chat_id=ADMIN_CHAT)
-
-        del apps[f"application_{message.message_id}"]
-        system.applications = apps
-        system.save()
 
     except KeyError:
         await cq.answer("❌ Заявка не найдена.")
