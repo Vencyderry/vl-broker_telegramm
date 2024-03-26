@@ -1,7 +1,6 @@
 from . import (
     start,
     currency,
-    calculator,
     price,
     application,
     clear,
@@ -11,7 +10,9 @@ from . import (
 
 from . import (
     admins,
-    calculator
+    calculator,
+    info_svh,
+    useful
 )
 
 single_handlers = [
@@ -20,13 +21,14 @@ single_handlers = [
     price.dp,
     application.dp,
     clear.dp,
-    useful.dp,
     rules.dp
 ]
 
 groups_handlers = [
     admins.group_handlers,
     calculator.group_handlers,
+    info_svh.group_handlers,
+    useful.group_handlers,
     single_handlers
 ]
 
