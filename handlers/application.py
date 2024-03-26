@@ -188,17 +188,17 @@ async def part_number(message: Message) -> None:
         else:
             username = from_.username.unwrap()
 
-        message_app = await api.send_message(text=f"❗️ Новая заявка от {from_.first_name}!"
-                                                  f"\n▶ Имя: {application['name']}"
-                                                  f"\n▶ Город: {application['country']}"
-                                                  f"\n▶ Описание груза: {application['cargo']}"
-                                                  f"\n▶ Номер телефона: {application['number']}"
-                                                  f"\n\n✈️ Telegram:"
-                                                  f"\n▶ Name: {from_.first_name}"
-                                                  f"\n▶ Username: @{username}",
-                                             chat_id=ADMIN_CHAT,
-                                             reply_markup=accept_keyboard
-                                             )
+        await api.send_message(text=f"❗️ Новая заявка от {from_.first_name}!"
+                                    f"\n▶ Имя: {application['name']}"
+                                    f"\n▶ Город: {application['country']}"
+                                    f"\n▶ Описание груза: {application['cargo']}"
+                                    f"\n▶ Номер телефона: {application['number']}"
+                                    f"\n\n✈️ Telegram:"
+                                    f"\n▶ Name: {from_.first_name}"
+                                    f"\n▶ Username: @{username}",
+                               chat_id=ADMIN_CHAT,
+                               reply_markup=accept_keyboard
+                               )
 
         await Application.delete(from_.id)
 
