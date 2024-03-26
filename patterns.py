@@ -1,4 +1,4 @@
-from telegrinder.tools import bold, escape, italic, HTMLFormatter, link
+from telegrinder.tools import bold, escape, HTMLFormatter, link
 
 ERROR_PERMISSION = "❌ Данную команду может использовать только администратор."
 ERROR_TARGET = "❌ Пользователь не найден."
@@ -57,7 +57,6 @@ MESSAGE_RULES = """
 📲8 (951) 018-11-18 (WA)
 📩vlb.cargo@gmail.com 
 🌐vlb-broker.ru
-
 
 #ВАЖНО #ПРАВИЛА_ЧАТА #VLB_СЕРВИС
 """
