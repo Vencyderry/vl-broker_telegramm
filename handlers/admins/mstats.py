@@ -44,12 +44,11 @@ async def mstats(message: Message) -> None:
 🤖 Статистика использования бота:
 ▶ Команда "/start": {digit(system.statistic_start)}
 ▶ Кнопка "Заполнить заявку": {digit(system.statistic_application)}
-▶ Кнопка "Ознакомиться с услугами": {digit(system.statistic_price)}
+▶ Кнопка "Открыть прайс-лист 2024": {digit(system.statistic_price)}
+▶ Кнопка "Узнать информацию о СВХ": {digit(system.statistic_svh)}
 ▶ Кнопка "Узнать курс валют": {digit(system.statistic_currency)}
-▶ Кнопка "Калькулятор": {digit(system.statistic_calculator)}
-
-🕰️ Топ промежутков времени активного использования бота:
-▶ Coming soon
+▶ Кнопка "Открыть калькулятор": {digit(system.statistic_calculator)}
+▶ Кнопка "Смотреть полезные видео": {digit(system.statistic_useful)}
 """
         # channel = await api.request_raw("getChannels", {"channel": USERS_CHAT}) #"-1001763293068"
         # print(channel)

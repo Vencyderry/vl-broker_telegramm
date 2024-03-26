@@ -116,6 +116,12 @@ class DispatchExecutor:
                 case "application":
                     system.statistic_application += 1
                     await time_statistics(from_.id, system)
+                case "svh_menu":
+                    system.statistic_svh += 1
+                    await time_statistics(from_.id, system)
+                case "useful_menu":
+                    system.statistic_useful += 1
+                    await time_statistics(from_.id, system)
                 case "calculator_moto":
                     system.statistic_calculator += 1
                     await time_statistics(from_.id, system)
@@ -125,7 +131,7 @@ class DispatchExecutor:
                 case "currency":
                     system.statistic_currency += 1
                     await time_statistics(from_.id, system)
-                case "price":
+                case "get_price":
                     system.statistic_price += 1
                     await time_statistics(from_.id, system)
                 case "start":

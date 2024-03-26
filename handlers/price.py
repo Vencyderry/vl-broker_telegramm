@@ -68,8 +68,8 @@ executor_get_price = DispatchExecutor(title="get_price",
                                       )
 
 
-@dp.callback_query(CallbackDataEq("price"))
-async def price_cq(cq: CallbackQuery) -> None:
+@dp.callback_query(CallbackDataEq("get_price"))
+async def get_price(cq: CallbackQuery) -> None:
     try:
         message = cq.message.unwrap().v
 
@@ -101,7 +101,7 @@ executor_set_price = DispatchExecutor(title="set_price",
 
 
 @dp.message(Command(["setprice"]))
-async def set_admin(message: Message) -> None:
+async def set_price(message: Message) -> None:
     try:
         if not is_admin(message.from_.unwrap().id) and not is_sr_admin(message.from_.unwrap().id):
             await message.answer(ERROR_PERMISSION)
