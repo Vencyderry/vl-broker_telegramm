@@ -367,7 +367,7 @@ async def calculator_auto_finish(message: Message) -> None:
                                                  f"currency={calculator['currency']}&"
                                                  f"m={calculator['engine']}&"
                                                  f"year={calculator['year']}&"
-                                                 f"v={calculator['volume']}&"
+                                                 f"v={1 if calculator['volume'] == 0 else calculator['volume']}&"
                                                  f"p={calculator['power']}&"
                                                  f"ymin={calculator['power']}&"
                                                  )
@@ -392,21 +392,21 @@ async def calculator_auto_finish(message: Message) -> None:
                     text=f"❌ При расчете таможенных платежей произошла ошибка, попробуйте снова.",
                     chat_id=message.chat.id)
                 await api.send_message(text=f"При расчете данных в калькуляторе, произошла ошибка.\n\n"
-                                            f"{calculator}\n\n{response_api}",
+                                            f"{calculator}\n\n{response_api}\n\n",
                                        chat_id=dev.tgid)
             except JSONDecodeError:
                 response = await api.send_message(
                     text=f"❌ При расчете таможенных платежей произошла ошибка, попробуйте снова.",
                     chat_id=message.chat.id)
                 await api.send_message(text=f"При расчете данных в калькуляторе, произошла ошибка.\n\n"
-                                            f"{calculator}\n\n{response_api}",
+                                            f"{calculator}\n\n{response_api}\n\n",
                                        chat_id=dev.tgid)
         else:
             response = await api.send_message(
                 text="❌ При расчете таможенных платежей произошла ошибка, попробуйте снова.",
                 chat_id=message.chat.id)
             await api.send_message(text=f"При расчете данных в калькуляторе, произошла ошибка.\n\n"
-                                        f"{calculator}\n\n{response_api}",
+                                        f"{calculator}\n\n{response_api}\n\n",
                                    chat_id=dev.tgid)
         await save_mess(response.unwrap())
 
