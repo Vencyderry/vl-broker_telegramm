@@ -49,6 +49,7 @@ async def mstats(message: Message) -> None:
 ▶ Кнопка "Узнать курс валют": {digit(system.statistic_currency)}
 ▶ Кнопка "Открыть калькулятор": {digit(system.statistic_calculator)}
 ▶ Кнопка "Смотреть полезные видео": {digit(system.statistic_useful)}
+▶ Кнопка "Вход в личный кабинет": {digit(system.statistic_personal_office)}
 """
         # channel = await api.request_raw("getChannels", {"channel": USERS_CHAT}) #"-1001763293068"
         # print(channel)

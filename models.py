@@ -30,6 +30,7 @@ class System(BaseModel):
     statistic_currency = IntegerField(default=0)
     statistic_price = IntegerField(default=0)
     statistic_useful = IntegerField(default=0)
+    statistic_personal_office = IntegerField(default=0)
     statistic_start = IntegerField(default=0)
 
     statistic_time = TextField(default='{}')
@@ -66,6 +67,6 @@ if __name__ == "__main__":
 
     migrator = SqliteMigrator(db)
     migrate(
-        migrator.add_column("system", "statistic_useful", IntegerField(default=0))
+        migrator.add_column("system", "statistic_personal_office", IntegerField(default=0))
     )
 

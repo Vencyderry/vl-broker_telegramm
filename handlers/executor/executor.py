@@ -122,6 +122,9 @@ class DispatchExecutor:
                 case "useful_menu":
                     system.statistic_useful += 1
                     await time_statistics(from_.id, system)
+                case "personal_office":
+                    system.statistic_personal_office += 1
+                    await time_statistics(from_.id, system)
                 case "calculator_moto":
                     system.statistic_calculator += 1
                     await time_statistics(from_.id, system)

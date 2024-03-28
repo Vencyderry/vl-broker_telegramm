@@ -5,7 +5,8 @@ from . import (
     application,
     clear,
     useful,
-    rules
+    rules,
+    personal_office
 )
 
 from . import (
@@ -21,7 +22,8 @@ single_handlers = [
     price.dp,
     application.dp,
     clear.dp,
-    rules.dp
+    rules.dp,
+    personal_office.dp
 ]
 
 groups_handlers = [
