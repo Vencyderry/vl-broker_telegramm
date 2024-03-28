@@ -12,7 +12,7 @@ dp = Dispatch()
 
 LOGIN_KEYBOARD = (
     InlineKeyboard()
-    .add(InlineButton("Войти в личный кабинет", url="https://lk.vlb-broker.ru/?login=yes"))
+    .add(InlineButton("Войти в личный кабинет", url="https://lk.vlb-broker.ru/"))
 ).get_markup()
 
 
