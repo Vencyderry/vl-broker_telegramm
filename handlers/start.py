@@ -18,7 +18,7 @@ kb = (
     .add(InlineButton("Узнать курс валют", callback_data="currency")).row()
     .add(InlineButton("Открыть калькулятор", callback_data="calculator")).row()
     .add(InlineButton("Смотреть полезные видео", callback_data="useful_menu")).row()
-    .add(InlineButton("Вход в личный кабинет", callback_data="personal_office")).row()
+    .add(InlineButton("Войти в личный кабинет", callback_data="personal_office")).row()
     .add(InlineButton("Перейти в чат VL-BROKER", url="https://t.me/+k9w6qxLAOiEwMWJi"))
 ).get_markup()
 
