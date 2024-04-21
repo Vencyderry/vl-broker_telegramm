@@ -37,7 +37,7 @@ async def svh_menu(cq: CallbackQuery) -> None:
         message = cq.message.unwrap().v
 
         await delete_mess(message.chat.id)
-        response = await api.send_message(text="🔹Выберите интересующую СВХ:",
+        response = await api.send_message(text="🔹Выберите интересующий СВХ:",
                                           chat_id=message.chat.id,
                                           reply_markup=SVH_KEYBOARD)
         await save_mess(response.unwrap())
