@@ -62,6 +62,4 @@ MESSAGE_RULES = """
 """
 
 
-{'application_539': '❗️ Новая заявка от MIKHAIL!\n▶ Имя: Михаил\n▶ Город: Улан удэ\n▶ Описание груза: Грузовая машина с кму\n▶ Номер телефона: 89025658657\n\n✈️ Telegram:\n▶ Name: MIKHAIL\n▶ Username: @Mikhail0208',
- 'application_540': '❗️ Новая заявка от Алексей!\n▶ Имя: Тенишова Юлия Олеговна\n▶ Город: Москва\n▶ Описание груза: BMW 530i xDrive Luxury \nWBAJD9109KB278203\n▶ Номер телефона: +79296160713, +79295771009 Алексей\n\n✈️ Telegram:\n▶ Name: Алексей\n▶ Username: @AlekseyyTen'
- }
+

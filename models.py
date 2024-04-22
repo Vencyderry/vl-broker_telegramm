@@ -58,6 +58,8 @@ class User(BaseModel):
     last_synch = IntegerField(default=0)
     cooldown_rules = DateTimeField(default=0)
 
+    punishment = TextField(default="free")
+
     class Meta(BaseModel):
         db_table = "user"
         order_by = ('id',)
@@ -67,6 +69,6 @@ if __name__ == "__main__":
 
     migrator = SqliteMigrator(db)
     migrate(
-        migrator.add_column("system", "statistic_personal_office", IntegerField(default=0))
+        migrator.add_column("user", "punishment", TextField(default="free"))
     )
 

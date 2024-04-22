@@ -8,6 +8,7 @@ from tools import save_mess, delete_mess
 from rules import CallbackDataStartsWith
 from handlers.executor import ExecutorType, DispatchExecutor
 from .faq_patterns import FAQ_ANSWERS
+from operations import get_system
 
 dp = Dispatch()
 
@@ -31,6 +32,7 @@ async def svh_info(cq: CallbackQuery) -> None:
         # 4 question (file include)
         document = None
         if "PDF_PRICE" in faq_answer:
+            faq_answer = faq_answer.replace(" PDF_PRICE", "")
             system = get_system()
             document = system.price_pdf
 

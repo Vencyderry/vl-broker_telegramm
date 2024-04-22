@@ -1,15 +1,17 @@
 import traceback
+import time
 
 from telegrinder import InlineKeyboard, InlineButton
 from telegrinder import ABCMiddleware, Message
-from telegrinder.types import Nothing
+from telegrinder.types import Nothing, ChatType
 from telegrinder.modules import logger
 
 from config import USERS_CHAT
 from patterns import GREETING_JOIN_CHAT
 from client import api, fmt
 from operations import *
-from tools import save_mess
+from tools import save_mess, detector_swear
+from handlers.admins.punishment import Punishment
 
 
 class JoinChatMiddleware(ABCMiddleware[Message]):
@@ -96,6 +98,43 @@ class MessageDeleteMiddleware(ABCMiddleware[Message]):
             return True
         except Exception:
             logger.error(f"Error in middleware <MessageDeleteMiddleware>\n{traceback.format_exc()}")
+
+
+class SwearFilterMiddleware(ABCMiddleware[Message]):
+
+    async def post(self, event: Message, responses: list, ctx: Context):
+        try:
+
+            if event.chat.id == USERS_CHAT:
+                if event.text is not Nothing:
+                    detect = detector_swear(event.text.unwrap())
+                    if detect['result']:
+                        await api.delete_message(message_id=event.message_id, chat_id=event.chat.id)
+                        text = f"""🔹Сообщение от пользователя @{event.from_.unwrap().username.unwrap()} удалено по причине нарушения правила, запрещающего мат как прямой, так и завуалированный.\n\n"""
+
+                        user = get_user(User.tgid, event.from_.unwrap().id)
+                        punishment = Punishment(user.punishment)
+
+                        if punishment.is_free() or punishment.is_kick():
+                            user.punishment = Punishment.WARN
+                            text += "📌Пользователь, повторно нарушивший правила чата, будет заблокирован."
+
+                        elif punishment.is_warn():
+                            system = get_system()
+                            admins = decode(system.administrators)
+                            if event.from_.unwrap().id not in admins:
+                                await api.ban_chat_member(chat_id=event.chat.id,
+                                                          user_id=event.from_.unwrap().id,
+                                                          until_date=time.time() + 60 * 60 * 24 * 30)
+                            user.punishment = Punishment.KICK
+                            text += "📌Пользователь заблокирован на 30 дней."
+
+                        await api.send_message(text=text,
+                                               chat_id=event.chat.id)
+
+                        user.save()
+        except Exception:
+            logger.error(f"Error in middleware <SwearFilterMiddleware>\n{traceback.format_exc()}")
 
 
 
