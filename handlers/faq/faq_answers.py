@@ -41,9 +41,15 @@ async def svh_info(cq: CallbackQuery) -> None:
                                           chat_id=message.chat.id,
                                           reply_markup=BACK_KEYBOARD,
                                           parse_mode=fmt.PARSE_MODE,
-                                          document=document,
                                           link_preview_options=LinkPreviewOptions(is_disabled=True))
         await save_mess(response.unwrap())
+
+        if document:
+            await api.send_document(chat_id=message.chat.id,
+                                    caption="📌Открыть/скачать прайс-лист в формате PDF.",
+                                    document=document)
+            response.unwrap().message_id += 1
+            await save_mess(response.unwrap())
 
     except Exception:
         executor_faq_answers.traceback = traceback.format_exc()
