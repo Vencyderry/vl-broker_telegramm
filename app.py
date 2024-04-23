@@ -73,6 +73,6 @@ bot.on.message.middlewares.append(MessageRouterMiddleware())
 bot.on.message.middlewares.append(RegistrationMiddleware())
 bot.on.message.middlewares.append(MessageDeleteMiddleware())
 bot.on.message.middlewares.append(JoinChatMiddleware())
-bot.on.message.middlewares.append(SwearFilterMiddleware())
+# bot.on.message.middlewares.append(SwearFilterMiddleware())
 
 bot.run_forever()
