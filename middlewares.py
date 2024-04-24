@@ -10,7 +10,7 @@ from config import USERS_CHAT
 from patterns import GREETING_JOIN_CHAT
 from client import api, fmt
 from operations import *
-from tools import save_mess, detector_swear
+from tools import save_mess, detector_swear, decode
 from handlers.admins.punishment import Punishment
 
 
@@ -105,7 +105,7 @@ class SwearFilterMiddleware(ABCMiddleware[Message]):
     async def post(self, event: Message, responses: list, ctx: Context):
         try:
 
-            if str(event.chat.id) == USERS_CHAT:
+            if str(event.chat.id) != USERS_CHAT:
                 if event.text is not Nothing:
                     detect = detector_swear(event.text.unwrap())
                     if detect['result']:

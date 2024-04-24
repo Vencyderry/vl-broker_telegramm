@@ -128,8 +128,6 @@ exceptions = [
 
 def detector_swear(phrase: str) -> dict:
 
-    phrase = phrase.lower().replace(" ", "")
-
     for exception in exceptions:
         if exception in phrase:
             phrase = phrase.replace(exception, "EXCEPT")
@@ -208,7 +206,7 @@ def detector_swear(phrase: str) -> dict:
             # Вот сам наш фрагмент.
             fragment = phrase[part: part+len(word)]
             # Если отличие этого фрагмента меньше или равно 25% этого слова, то считаем, что они равны.
-            if distance(fragment, word) <= len(word)*0.25:
+            if distance(fragment, word) <= len(word)*0.166666667:
                 # Если они равны, выводим надпись о их нахождении.
 
                 word_ = word

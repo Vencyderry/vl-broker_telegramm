@@ -29,7 +29,7 @@ async def svh_info(cq: CallbackQuery) -> None:
 
         faq_answer = FAQ_ANSWERS[cq.data.unwrap()]
 
-        # 4 question (file include)
+        # 4 question (file includes)
         document = None
         if "PDF_PRICE" in faq_answer:
             faq_answer = faq_answer.replace(" PDF_PRICE", "")
