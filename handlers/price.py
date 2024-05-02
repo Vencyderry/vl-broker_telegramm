@@ -104,12 +104,13 @@ executor_set_price = DispatchExecutor(title="set_price",
 @dp.message(Command(["setprice"]))
 async def set_price(message: Message) -> None:
     try:
+
         if not is_admin(message.from_.unwrap().id) and not is_sr_admin(message.from_.unwrap().id):
             await message.answer(ERROR_PERMISSION)
             return
 
         system = get_system()
-        if message.reply_to_message is Nothing:
+        if message.reply_to_message is Nothing or message.reply_to_message.unwrap().document is Nothing:
             await message.answer("⚠️ Ответьте командой на сообщение в котором есть PDF документ.")
             return
 

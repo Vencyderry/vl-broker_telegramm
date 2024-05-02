@@ -31,6 +31,8 @@ class System(BaseModel):
     statistic_price = IntegerField(default=0)
     statistic_useful = IntegerField(default=0)
     statistic_personal_office = IntegerField(default=0)
+    statistic_date_production = IntegerField(default=0)
+    statistic_faq = IntegerField(default=0)
     statistic_start = IntegerField(default=0)
 
     statistic_time = TextField(default='{}')
@@ -68,7 +70,6 @@ class User(BaseModel):
 if __name__ == "__main__":
 
     migrator = SqliteMigrator(db)
-    migrate(
-        migrator.add_column("user", "punishment", TextField(default="free"))
+    migrate(migrator.add_column("system", "statistic_faq", IntegerField(default=0))
     )
 

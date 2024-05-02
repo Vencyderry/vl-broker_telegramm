@@ -6,8 +6,7 @@ from . import (
     clear,
     useful,
     rules,
-    personal_office,
-    date_production
+    personal_office
 )
 
 from . import (
@@ -16,6 +15,7 @@ from . import (
     info_svh,
     useful,
     faq,
+    date_production
 )
 
 single_handlers = [
@@ -25,8 +25,7 @@ single_handlers = [
     application.dp,
     clear.dp,
     rules.dp,
-    personal_office.dp,
-    date_production.dp
+    personal_office.dp
 ]
 
 groups_handlers = [
@@ -35,6 +34,7 @@ groups_handlers = [
     info_svh.group_handlers,
     useful.group_handlers,
     faq.group_handlers,
+    date_production.group_handlers,
     single_handlers
 ]
 

@@ -15,6 +15,7 @@ kb = (
     .add(InlineButton("Оставить заявку", callback_data="app")).row()
     .add(InlineButton("Открыть прайс-лист 2024", callback_data="get_price")).row()
     .add(InlineButton("Узнать информацию о СВХ", callback_data="svh_menu")).row()
+    .add(InlineButton("Узнать дату выпуска авто", callback_data="date_production")).row()
     .add(InlineButton("Узнать курс валют", callback_data="currency")).row()
     .add(InlineButton("Открыть калькулятор", callback_data="calculator")).row()
     .add(InlineButton("Смотреть полезные видео", callback_data="useful_menu")).row()

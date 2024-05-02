@@ -184,9 +184,9 @@ async def part_number(message: Message) -> None:
         ).get_markup()
 
         if from_.username == Nothing:
-            username = "Неопределён"
+            username = from_.full_name
         else:
-            username = from_.username.unwrap()
+            username = "@" + from_.username.unwrap()
 
         await api.send_message(text=f"❗️ Новая заявка от {from_.first_name}!"
                                     f"\n▶ Имя: {application['name']}"
@@ -195,7 +195,7 @@ async def part_number(message: Message) -> None:
                                     f"\n▶ Номер телефона: {application['number']}"
                                     f"\n\n✈️ Telegram:"
                                     f"\n▶ Name: {from_.first_name}"
-                                    f"\n▶ Username: @{username}",
+                                    f"\n▶ Username: {username}",
                                chat_id=ADMIN_CHAT,
                                reply_markup=accept_keyboard
                                )
@@ -216,11 +216,15 @@ executor_application_accept = DispatchExecutor(title="application_accept",
 @dp.callback_query(CallbackDataEq("app_accept"))
 async def edit_application_cq(cq: CallbackQuery) -> None:
     try:
+
+        if cq.from_.username == Nothing:
+            username = cq.from_.full_name
+        else:
+            username = "@" + cq.from_.username.unwrap()
+
         message = cq.message.unwrap().v
-
         text_application = message.text.unwrap()
-
-        await api.edit_message_text(text=text_application.replace("Новая з", "З").replace("❗️", "✔️") + f"\n\n✅ Заявка принята в работу менеджером @{cq.from_.username.unwrap()}",
+        await api.edit_message_text(text=text_application.replace("Новая з", "З").replace("❗️", "✔️") + f"\n\n✅ Заявка принята в работу менеджером {username}",
                                     message_id=message.message_id,
                                     chat_id=ADMIN_CHAT)
 

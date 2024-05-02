@@ -21,8 +21,9 @@ SVH_KEYBOARD = (
     .add(InlineButton("СВХ «ВМС»", callback_data="info_svh_8")).row()
     .add(InlineButton("СВХ «Мортэк-ДВ»", callback_data="info_svh_9")).row()
     .add(InlineButton("СВХ «ДАЛЬКОМХОЛОД»", callback_data="info_svh_10")).row()
-    .add(InlineButton("СВХ «Соллерс»", callback_data="info_svh_11")).row()
-    .add(InlineButton("СВХ «ЧЭМК»", callback_data="info_svh_12"))
+    .add(InlineButton("СВХ «Пасифик Лоджистик»", callback_data="info_svh_11")).row()
+    .add(InlineButton("СВХ «ЧЭМК»", callback_data="info_svh_12")).row()
+    .add(InlineButton("СВХ «Соллерс»", callback_data="info_svh_13"))
 ).get_markup()
 
 
