@@ -101,15 +101,18 @@ async def message_send_honda(message: Message, ) -> None:
 """
 
     await delete_mess(message.chat.id)
+
+    response = await api.send_video(chat_id=message.chat.id,
+                                    video="BAACAgIAAx0Cf0QyWAACATdmMuLJVFz7aT4Rn9J0F_KQgYXtlQACH0cAAv28mEmFguhCJM_G6jQE")
+    await save_mess(response.unwrap())
+
     response = await api.send_message(text=text,
                                       chat_id=message.chat.id,
                                       reply_markup=KEYBOARD_CANCEL,
                                       parse_mode=fmt.PARSE_MODE)
     await save_mess(response.unwrap())
 
-    response = await api.send_video(chat_id=message.chat.id,
-                                    video="BAACAgIAAx0Cf0QyWAACATdmMuLJVFz7aT4Rn9J0F_KQgYXtlQACH0cAAv28mEmFguhCJM_G6jQE")
-    await save_mess(response.unwrap())
+
 
 
 @dp.message(DateProduction.Message(DateProduction.VIN_NUMBER))
