@@ -140,6 +140,12 @@ class DispatchExecutor:
                 case "start":
                     system.statistic_start += 1
                     await time_statistics(from_.id, system)
+                case "faq_menu":
+                    system.statistic_faq += 1
+                    await time_statistics(from_.id, system)
+                case "date_production":
+                    system.statistic_date_production += 1
+                    await time_statistics(from_.id, system)
 
             system.commands_processed += 1
             system.commands_processed_all += 1
