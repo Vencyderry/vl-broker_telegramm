@@ -61,31 +61,33 @@ class MessageRouterMiddleware(ABCMiddleware[Message]):
 class RegistrationMiddleware(ABCMiddleware[Message]):
     async def pre(self, event: Message, ctx: Context) -> bool:
         try:
-            user = get_user(User.tgid, event.from_.unwrap().id)
-
-            if not user:
-
-                if event.from_.unwrap().username == Nothing:
-                    username = event.from_.unwrap().id
-                else:
-                    username = event.from_.unwrap().username.unwrap().lower()
-
-                User(
-                    tgid=event.from_.unwrap().id,
-                    username=username,
-                    registration_date=time.time()
-                ).save()
-
+            if event.from_ is not Nothing:
                 user = get_user(User.tgid, event.from_.unwrap().id)
 
-                if username != event.from_.unwrap().id:
-                    msg = f"[{username}|{event.from_.unwrap().id}]"
-                else:
-                    msg = f"[{username}]"
+                if not user:
 
-                logger.info(f"[REGISTRATION] User [{event.from_.unwrap().first_name}] "
-                            f"{msg} is registered with ID [{user.id}]")
-            return True
+                    if event.from_.unwrap().username == Nothing:
+                        username = event.from_.unwrap().id
+                    else:
+                        username = event.from_.unwrap().username.unwrap().lower()
+
+                    User(
+                        tgid=event.from_.unwrap().id,
+                        username=username,
+                        registration_date=time.time()
+                    ).save()
+
+                    user = get_user(User.tgid, event.from_.unwrap().id)
+
+                    if username != event.from_.unwrap().id:
+                        msg = f"[{username}|{event.from_.unwrap().id}]"
+                    else:
+                        msg = f"[{username}]"
+
+                    logger.info(f"[REGISTRATION] User [{event.from_.unwrap().first_name}] "
+                                f"{msg} is registered with ID [{user.id}]")
+                return True
+
         except Exception:
             logger.error(f"Error in middleware <RegistrationMiddleware>\n{traceback.format_exc()}")
 
