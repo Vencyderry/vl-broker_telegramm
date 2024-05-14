@@ -45,8 +45,8 @@ PRICE = f"""
 {HTMLFormatter(escape("*️⃣снятие тонировки — "))}{HTMLFormatter(bold("от 1000 ₽"))}
 {HTMLFormatter(escape("*️⃣вывоз легкового автомобиля с СВХ в лабораторию — "))}{HTMLFormatter(bold("5 000 ₽"))}
 {HTMLFormatter(escape("*️⃣вывоз мотоцикла с СВХ в лабораторию — "))}{HTMLFormatter(bold("8 000 ₽"))}
-{HTMLFormatter(escape("*️⃣вывоз в транспортную компанию для отправки — "))}{HTMLFormatter(bold("3 500 ₽"))}
-{HTMLFormatter(escape("*️⃣стоянка для легкового автомобиля — "))}{HTMLFormatter(bold("180 ₽"))}{HTMLFormatter(escape(" / сутки"))}
+{HTMLFormatter(escape("*️⃣вывоз в транспортную компанию для отправки — "))}{HTMLFormatter(bold("4 500 ₽"))}
+{HTMLFormatter(escape("*️⃣стоянка для легкового автомобиля — "))}{HTMLFormatter(bold("200 ₽"))}{HTMLFormatter(escape(" / сутки"))}
 {HTMLFormatter(escape("*️⃣стоянка для мотоцикла — "))}{HTMLFormatter(bold("100 ₽"))}{HTMLFormatter(escape(" / сутки"))}
 {HTMLFormatter(escape("*️⃣расходы на бензин — "))}{HTMLFormatter(bold("от 500 ₽"))}
 
