@@ -6,7 +6,7 @@ from telegrinder import ABCMiddleware, Message
 from telegrinder.types import Nothing, ChatType
 from telegrinder.modules import logger
 
-from config import USERS_CHAT
+from config import USERS_CHAT, LOGSWEAR_CHAT
 from patterns import GREETING_JOIN_CHAT
 from client import api, fmt
 from operations import *
@@ -111,8 +111,21 @@ class SwearFilterMiddleware(ABCMiddleware[Message]):
                 if event.text is not Nothing:
                     detect = detector_swear(event.text.unwrap())
                     if detect['result']:
+
+                        if event.from_.unwrap().username == Nothing:
+                            username = event.from_.unwrap().full_name
+                        else:
+                            username = "@" + event.from_.unwrap().username.unwrap()
+
+                        await api.send_message(text=f"LogSwear | {username} | Найден фрагмент \"{detect['fragment']}\" похожий на \"{detect['word']}\"",
+                                               chat_id=LOGSWEAR_CHAT)
+
                         await api.delete_message(message_id=event.message_id, chat_id=event.chat.id)
-                        text = f"""🔹Сообщение от пользователя @{event.from_.unwrap().username.unwrap()} удалено по причине нарушения правила, запрещающего мат как прямой, так и завуалированный.\n\n"""
+
+                        try:
+                            text = f"""🔹Сообщение от пользователя {username} удалено по причине нарушения правила, запрещающего мат как прямой, так и завуалированный.\n\n"""
+                        except Exception:
+                            pass
 
                         user = get_user(User.tgid, event.from_.unwrap().id)
                         punishment = Punishment(user.punishment)
