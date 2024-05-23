@@ -6,7 +6,7 @@ from telegrinder import ABCMiddleware, Message
 from telegrinder.types import Nothing, ChatType
 from telegrinder.modules import logger
 
-from config import USERS_CHAT, LOGSWEAR_CHAT
+from config import USERS_CHAT, LOG_SWEAR_CHAT
 from patterns import GREETING_JOIN_CHAT
 from client import api, fmt
 from operations import *
@@ -118,7 +118,7 @@ class SwearFilterMiddleware(ABCMiddleware[Message]):
                             username = "@" + event.from_.unwrap().username.unwrap()
 
                         await api.send_message(text=f"LogSwear | {username} | Найден фрагмент \"{detect['fragment']}\" похожий на \"{detect['word']}\"",
-                                               chat_id=LOGSWEAR_CHAT)
+                                               chat_id=LOG_SWEAR_CHAT)
 
                         await api.delete_message(message_id=event.message_id, chat_id=event.chat.id)
 
