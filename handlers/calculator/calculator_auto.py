@@ -169,20 +169,21 @@ async def calculator_auto_price(cq: CallbackQuery) -> None:
 @dp.message(Calculator.Message(Calculator.PRICE, Calculator.AUTO))
 async def calculator_auto_engine(message: Message) -> None:
     try:
-        if message.message_id > 0:
-            if not message.text.unwrap().isdigit():
+        if hasattr(message, "message_id"):
+            if message.message_id > 0:
+                if not message.text.unwrap().isdigit():
 
-                await delete_mess(message.chat.id)
-                response = await api.send_message(text=Calculator.MSG_PRICE,
-                                                  chat_id=message.chat.id,
-                                                  reply_markup=CANCEL_KEYBOARD,
-                                                  parse_mode=fmt.PARSE_MODE)
-                await save_mess(response.unwrap())
-                return
+                    await delete_mess(message.chat.id)
+                    response = await api.send_message(text=Calculator.MSG_PRICE,
+                                                      chat_id=message.chat.id,
+                                                      reply_markup=CANCEL_KEYBOARD,
+                                                      parse_mode=fmt.PARSE_MODE)
+                    await save_mess(response.unwrap())
+                    return
 
-            calculator = ctx.get(f"calculator_{message.from_.unwrap().id}")
-            calculator["price"] = int(message.text.unwrap())
-            ctx.set(f"calculator_{message.from_.unwrap().id}", calculator)
+                calculator = ctx.get(f"calculator_{message.from_.unwrap().id}")
+                calculator["price"] = int(message.text.unwrap())
+                ctx.set(f"calculator_{message.from_.unwrap().id}", calculator)
 
 
         await delete_mess(message.chat.id)
