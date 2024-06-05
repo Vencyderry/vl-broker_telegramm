@@ -109,7 +109,8 @@ class SwearFilterMiddleware(ABCMiddleware[Message]):
 
             if str(event.chat.id) == USERS_CHAT:
                 if event.text is not Nothing:
-                    detect = detector_swear(event.text.unwrap())
+                    detect = detector_swear(event.text.unwrap().lower())
+
                     if detect['result']:
 
                         if event.from_.unwrap().username == Nothing:
@@ -117,15 +118,10 @@ class SwearFilterMiddleware(ABCMiddleware[Message]):
                         else:
                             username = "@" + event.from_.unwrap().username.unwrap()
 
-                        await api.send_message(text=f"LogSwear | {username} | Найден фрагмент \"{detect['fragment']}\" похожий на \"{detect['word']}\"",
-                                               chat_id=LOG_SWEAR_CHAT)
-
                         await api.delete_message(message_id=event.message_id, chat_id=event.chat.id)
 
-                        try:
-                            text = f"""🔹Сообщение от пользователя {username} удалено по причине нарушения правила, запрещающего мат как прямой, так и завуалированный.\n\n"""
-                        except Exception:
-                            pass
+                        text = f"""🔹Сообщение от пользователя {username} удалено по причине нарушения правила, запрещающего мат как прямой, так и завуалированный.\n\n"""
+
 
                         user = get_user(User.tgid, event.from_.unwrap().id)
                         punishment = Punishment(user.punishment)
@@ -133,6 +129,7 @@ class SwearFilterMiddleware(ABCMiddleware[Message]):
                         if punishment.is_free() or punishment.is_kick():
                             user.punishment = Punishment.WARN
                             text += "📌Пользователь, повторно нарушивший правила чата, будет заблокирован."
+                            log_swear = "WARN"
 
                         elif punishment.is_warn():
                             system = get_system()
@@ -143,11 +140,35 @@ class SwearFilterMiddleware(ABCMiddleware[Message]):
                                                           until_date=time.time() + 60 * 60 * 24 * 30)
                             user.punishment = Punishment.KICK
                             text += "📌Пользователь заблокирован на 30 дней."
+                            log_swear = "BAN"
 
                         await api.send_message(text=text,
                                                chat_id=event.chat.id)
 
                         user.save()
+
+                    elif detect['only_warn']:
+
+                        if event.from_.unwrap().username == Nothing:
+                            username = event.from_.unwrap().full_name
+                        else:
+                            username = "@" + event.from_.unwrap().username.unwrap()
+
+                        await api.delete_message(message_id=event.message_id, chat_id=event.chat.id)
+
+                        try:
+                            await api.send_message(text=f"🔹Сообщение от пользователя {username} удалено по причине нарушения правила, запрещающего мат как прямой, так и завуалированный.\n\n"
+                                                        f"📌Пользователь, повторно нарушивший правила чата, будет заблокирован.",
+                                                   chat_id=event.chat.id)
+                        except Exception:
+                            pass
+                    else:
+                        return
+
+                    await api.send_message(
+                        text=f"LogSwear | <{log_swear}> | {username} | Найден фрагмент \"{detect['fragment']}\" похожий на \"{detect['word']}\" ",
+                        chat_id=LOG_SWEAR_CHAT)
+
         except Exception:
             logger.error(f"Error in middleware <SwearFilterMiddleware>\n{traceback.format_exc()}")
 

@@ -61,7 +61,7 @@ class Swear:
 
     standart_dirt = ''.join(chr(n) for n in standart_dirt)
 
-    exceptions = ["оскорблять", "парикмахер", "мандат", "подштрихуй", "подстрахуй"]
+    words_exceptions = ["оскорблять", "парикмахер", "мандат", "подштрихуй", "подстрахуй"]
 
     @staticmethod
     def _get_search(pattern: str):
@@ -91,7 +91,7 @@ class Swear:
         return hide_search
 
 
-words = [
+words_swear = [
     "блядь",
     "ебать",
     "пизда",
@@ -99,8 +99,6 @@ words = [
     "хуи",
     "хуе",
     "мудак",
-    "хер",
-    "хрен",
     "манда",
     "гандон",
     "пидор",
@@ -116,20 +114,44 @@ words = [
     "бля"
 ]
 
-exceptions = [
+words_only_warn = [
+    "хрен",
+    "нахрен",
+    "похрен",
+    "нахер",
+    "похер",
+    "хер"
+]
+
+words_exceptions = [
     "оскорблять",
     "парикмахер",
     "мандат",
     "подштрихуй",
-    "подстрахуй"
+    "подстрахуй",
+    "закупа",
+    "закуп"
 ]
 
 
 def detector_swear(phrase: str) -> dict:
 
-    for exception in exceptions:
+    search = False
+    word_ = None
+    fragment_ = None
+    only_warn = False
+
+    for exception in words_exceptions:
         if exception in phrase:
             phrase = phrase.replace(exception, "EXCEPT")
+
+    phrase_split = phrase.split()
+    for word in words_only_warn:
+        if word in phrase_split:
+            search = False
+            word_ = word
+            fragment_ = word
+            only_warn = True
 
     def distance(a, b):
         # Calculates the Levenshtein distance between a and b.
@@ -195,25 +217,25 @@ def detector_swear(phrase: str) -> dict:
                 if letter == phr:
                     # Заменяем эту букву на ключ словаря.
                     phrase = phrase.replace(phr, key)
-    search = False
-    word_ = None
-    fragment_ = None
+
     # Проходимся по всем словам.
-    for word in words:
+    for word in words_swear:
         # Разбиваем слово на части, и проходимся по ним.
         for part in range(len(phrase)):
             # Вот сам наш фрагмент.
             fragment = phrase[part: part+len(word)]
-            # Если отличие этого фрагмента меньше или равно 25% этого слова, то считаем, что они равны.
+            # Если отличие этого фрагмента меньше или равно 16% этого слова, то считаем, что они равны.
             if distance(fragment, word) <= len(word)*0.166666667:
                 # Если они равны, выводим надпись о их нахождении.
 
                 word_ = word
                 fragment_ = fragment
                 search = True
+                only_warn = False
 
     return {
         "result": search,
         "word": word_,
-        "fragment": fragment_
+        "fragment": fragment_,
+        "only_warn": only_warn
     }
