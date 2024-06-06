@@ -40,10 +40,10 @@ async def application_cancel(cq: CallbackQuery) -> None:
                 await start_application_cq.func(cq)
             case Application.COUNTRY:
                 cq.message.unwrap().v.message_id = -1
-                await part_name.func(cq.message.unwrap())
+                await part_name.func(cq.message.unwrap().v)
             case Application.CARGO:
                 cq.message.unwrap().v.message_id = -1
-                await part_country.func(cq.message.unwrap())
+                await part_country.func(cq.message.unwrap().v)
 
     except Exception:
         executor_application.traceback = traceback.format_exc()
