@@ -266,7 +266,7 @@ async def calculator_auto_volume(message: Message) -> None:
                 await Calculator.set(message.chat.id, Calculator.YEAR_ADDITION, Calculator.AUTO)
                 return
 
-
+        calculator = ctx.get(f"calculator_{message.from_.unwrap().id}")
         calculator["ymin"] = 0
         ctx.set(f"calculator_{message.from_.unwrap().id}", calculator)
 
