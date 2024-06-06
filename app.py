@@ -42,6 +42,7 @@ async def start_bot() -> None:
         system = get_system()
         system.messages_processed = 0
         system.commands_processed = 0
+        system.start_time = time.time()
         system.save()
 
         ctx.set("bot", 1)

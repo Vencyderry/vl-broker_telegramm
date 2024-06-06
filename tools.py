@@ -1,11 +1,46 @@
 import json
 import re
 import string
+import math
 
 from client import ctx, api
 
 from telegrinder import Message
 from typing import Union
+
+
+def time_converter(time, got):
+    """Функция конвертации промежутка времени.
+
+    Конвертирует промежуток времени из формата UnixTime в привычный формат."""
+    seconds = math.floor(time % 3600 % 60)
+    minutes = math.floor((time % 3600) / 60)
+    hours = math.floor(time / 3600) % 24
+    days = math.floor((time / 3600) / 24) % 30
+    month = math.floor(((time / 3600) / 24) / 30)
+    years = math.floor(((time / 3600) / 24) / 365)
+    words = [[["секунд", "секунда", "секунды"], ["минут", "минута", "минуты"], ["часов", "час", "часа"],
+              ["дней", "день", "дня"], ["месяцев", "месяц", "месяца"], ["лет", "год", "года"]],
+             [["секунд", "секунду", "секунды"], ["минут", "минуту", "минуты"], ["часов", "час", "часа"],
+              ["дней", "день", "дня"], ["месяцев", "месяц", "месяца"], ["лет", "год", "года"]]]
+
+    def time_word(time, num):
+        nonlocal got
+        if time == 0:
+            return ""
+        elif (time >= 5 and time <= 20) or (time % 10 >= 5 and time % 10 <= 9) or time % 10 == 0:
+            return f" {time} {words[got][num][0]}"
+        elif time == 1 or time % 10 == 1:
+            return f" {time} {words[got][num][1]}"
+        else:
+            return f" {time} {words[got][num][2]}"
+
+    return (f"{time_word(years, 5)}"
+            f"{time_word(month, 4)}"
+            f"{time_word(days, 3)}"
+            f"{time_word(hours, 2)}"
+            f"{time_word(minutes, 1)}"
+            f"{time_word(seconds, 0)}")
 
 
 def decode(value):

@@ -32,7 +32,8 @@ async def mstats(message: Message) -> None:
         users = get_users_all()
         stats = f"""
 ℹ️ Информация о боте:
-  
+
+⏱️ Аптайм: {time_converter(time.time() - system.start_time, 0)}
 👥 Пользователей в базе: {digit(len(users))}
 
 📨 Статистика обработки ивентов:
