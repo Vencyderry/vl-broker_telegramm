@@ -63,13 +63,14 @@ def digit(number: Union[str, int]) -> str:
 
 async def save_mess(message: Message):
 
-    if message.chat.type == 'private':
-        if not ctx.get(f"messages_{message.chat.id}"):
-            ctx.set(f"messages_{message.chat.id}", [])
+    if hasattr(message, "chat"):
+        if message.chat.type == 'private':
+            if not ctx.get(f"messages_{message.chat.id}"):
+                ctx.set(f"messages_{message.chat.id}", [])
 
-        messages = ctx.get(f"messages_{message.chat.id}")
-        messages.append(message.message_id)
-        ctx.set(f"messages_{message.chat.id}", messages)
+            messages = ctx.get(f"messages_{message.chat.id}")
+            messages.append(message.message_id)
+            ctx.set(f"messages_{message.chat.id}", messages)
 
 
 async def delete_mess(chat_id):

@@ -54,6 +54,7 @@ async def application_cancel(cq: CallbackQuery) -> None:
 @dp.callback_query(CallbackDataEq("app"))
 async def start_application_cq(cq: CallbackQuery) -> None:
     try:
+
         if cq.message.unwrap().v.message_id > 0:
             ctx.set(f"application_{cq.from_.id}", {})
 
