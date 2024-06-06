@@ -6,8 +6,9 @@ from permissions_store import is_admin
 from patterns import ERROR_PERMISSION
 from operations import get_system, get_users_all, get_user
 from models import User
-from tools import digit
+from tools import digit, time_converter
 from config import USERS_CHAT
+
 from telegrinder import InlineKeyboard, InlineButton, Dispatch, Message
 from telegrinder.rules import Text, IsPrivate
 
