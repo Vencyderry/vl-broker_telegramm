@@ -284,7 +284,7 @@ class DateProduction:
                 "data": {"vin": vin}
              },
             "local_api": {
-                "url": f"http://localhost:3000/api?company={brand}&vincode={vin}",
+                "url": f"http://82.147.71.242:3000/api?company={brand}&vincode={vin}",
                 "data": None,
                 "brand": brand
             }
