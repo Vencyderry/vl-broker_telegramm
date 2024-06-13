@@ -346,6 +346,8 @@ class DateProduction:
                 return
             elif "message" in date or "message" in date[0]:
                 return
+            elif date[0]["description"] == "information not found":
+                return
             else:
                 date = date[0]["description"]
 
