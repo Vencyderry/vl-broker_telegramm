@@ -13,6 +13,7 @@ from telegrinder.tools import italic, escape, HTMLFormatter
 
 from typing import List, Any, Coroutine, Tuple
 from client import ctx, client
+from tools import decode
 
 
 class CallbackDataEqs(CallbackQueryDataRule):
@@ -268,6 +269,47 @@ class DateProduction:
         DAIHATSU
     ]
 
+    ID_BRANDS = {
+        "date_production_brand_1": "NISSAN",
+        "date_production_brand_2": "MITSUBISHI",
+        "date_production_brand_3": "ISUZU",
+        "date_production_brand_4": "TOYOTA",
+        "date_production_brand_5": "SUZUKI",
+        "date_production_brand_6": "SUBARU",
+        "date_production_brand_7": "DAIHATSU",
+        "date_production_brand_8": "MAZDA",
+        "date_production_brand_9": "HONDA",
+    }
+
+    @staticmethod
+    def format_date(date: str) -> str:
+
+        if "январь" in date:
+            date = date.replace("январь ", "01.")
+        elif "февраль" in date:
+            date = date.replace("февраль ", "02.")
+        elif "март" in date:
+            date = date.replace("март ", "03.")
+        elif "апрель" in date:
+            date = date.replace("апрель ", "04.")
+        elif "май" in date:
+            date = date.replace("май ", "05.")
+        elif "июнь" in date:
+            date = date.replace("июнь ", "06.")
+        elif "июль" in date:
+            date = date.replace("июль ", "07.")
+        elif "август" in date:
+            date = date.replace("август ", "08.")
+        elif "сентябрь" in date:
+            date = date.replace("сентябрь ", "09.")
+        elif "октябрь" in date:
+            date = date.replace("октябрь ", "10.")
+        elif "ноябрь" in date:
+            date = date.replace("ноябрь ", "11.")
+        elif "декабрь" in date:
+            date = date.replace("декабрь ", "12.")
+        return date
+
     @classmethod
     async def request(cls, vin: str, brand: str = None) -> tuple[Any, Any] | None:
 
@@ -298,12 +340,9 @@ class DateProduction:
     async def request_to_local_api(cls, link: dict = None) -> Any | None:
         try:
             response_api = await client.request_text(url=link['url'])
-            date = response_api.json()[0][1]["Дата выпуска"]
-            brand_str = ""
-            for brand in cls.BRANDS:
-                if brand == f"date_production_brand_{link['brand']}":
-                    brand_str = brand.__str__()
-            return date, brand_str
+            date = decode(response_api)[0]["description"]
+
+            return cls.format_date(date), cls.ID_BRANDS[f"date_production_brand_{link['brand']}"]
         except:
             return
 

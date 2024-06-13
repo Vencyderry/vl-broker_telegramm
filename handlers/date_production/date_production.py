@@ -121,7 +121,7 @@ async def date_production_vin(message: Message) -> None:
     try:
         brand = ctx.get(f"date_production_{message.chat.id}")['brand']
 
-        response = await DateProduction.request(message.text.unwrap())
+        response = await DateProduction.request(message.text.unwrap(), brand)
         if response:
 
             if response[0] != '' and response[0] is not None:
