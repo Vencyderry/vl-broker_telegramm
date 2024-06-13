@@ -340,7 +340,14 @@ class DateProduction:
     async def request_to_local_api(cls, link: dict = None) -> Any | None:
         try:
             response_api = await client.request_text(url=link['url'])
-            date = decode(response_api)[0]["description"]
+
+            date = decode(response_api)
+            if len(date) != 0:
+                return
+            elif "message" in date or "message" in date[0]:
+                return
+            else:
+                date = date[0]["description"]
 
             return cls.format_date(date), cls.ID_BRANDS[f"date_production_brand_{link['brand']}"]
         except:
