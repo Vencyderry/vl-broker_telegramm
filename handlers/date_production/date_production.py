@@ -13,8 +13,15 @@ dp = Dispatch()
 
 KEYBOARD_BRAND = (
     InlineKeyboard()
-    .add(InlineButton("Toyota & Nissan", callback_data="date_production_brand_1")).row()
-    .add(InlineButton("Honda", callback_data="date_production_brand_2")).row()
+    .add(InlineButton("Toyota", callback_data="date_production_brand_1")).row()
+    .add(InlineButton("Nissan", callback_data="date_production_brand_2")).row()
+    .add(InlineButton("Mazda", callback_data="date_production_brand_3")).row()
+    .add(InlineButton("Mitsubishi", callback_data="date_production_brand_4")).row()
+    .add(InlineButton("Honda", callback_data="date_production_brand_5")).row()
+    .add(InlineButton("Suzuki", callback_data="date_production_brand_6")).row()
+    .add(InlineButton("Subaru", callback_data="date_production_brand_7")).row()
+    .add(InlineButton("Isuzu", callback_data="date_production_brand_8")).row()
+    .add(InlineButton("Daihatsu", callback_data="date_production_brand_9")).row()
 ).get_markup()
 
 
@@ -50,10 +57,6 @@ async def date_production_brand(cq: CallbackQuery) -> None:
 
         date_production = {'brand': cq.data.unwrap()}
         ctx.set(f"date_production_{cq.from_.id}", date_production)
-
-        if cq.data.unwrap() == DateProduction.HONDA:
-            await date_production_vin.func(message)
-            return
 
         await delete_mess(message.chat.id)
         response = await api.send_message(text="Введите серию и номер кузова в формате \"GK3-3322969\"",
@@ -118,25 +121,15 @@ async def date_production_vin(message: Message) -> None:
     try:
         brand = ctx.get(f"date_production_{message.chat.id}")['brand']
 
-        if brand == DateProduction.HONDA:
-            await message_send_honda(message)
-            return
-        else:
+        response = await DateProduction.request(message.text.unwrap())
+        if response:
 
-            response = await DateProduction.request(message.text.unwrap())
-            if response:
-
-                if response[1] == 'HONDA':
-
-                    await message_send_honda(message)
-                    return
-
-                elif response[0] != '' and response[0] is not None:
-                    mess = message_found(response[1], response[0])
-                else:
-                    mess = message_unfound(response[1])
+            if response[0] != '' and response[0] is not None:
+                mess = message_found(response[1], response[0])
             else:
-                mess = message_unfound()
+                mess = message_unfound(response[1])
+        else:
+            mess = message_unfound()
 
         await delete_mess(message.chat.id)
         response = await api.send_message(text=mess,

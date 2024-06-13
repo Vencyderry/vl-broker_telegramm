@@ -246,16 +246,33 @@ class DateProduction:
         VIN_NUMBER
     ]
 
-    TOYOTA_NISSAN = "date_production_brand_1"
-    HONDA = "date_production_brand_2"
+    TOYOTA = "date_production_brand_1"
+    NISSAN = "date_production_brand_2"
+    MAZDA = "date_production_brand_3"
+    MITSUBISHI = "date_production_brand_4"
+    HONDA = "date_production_brand_5"
+    SUZUKI = "date_production_brand_6"
+    SUBARU = "date_production_brand_7"
+    ISUZU = "date_production_brand_8"
+    DAIHATSU = "date_production_brand_9"
 
     BRANDS = [
-        TOYOTA_NISSAN,
-        HONDA
+        TOYOTA,
+        NISSAN,
+        MAZDA,
+        MITSUBISHI,
+        HONDA,
+        SUZUKI,
+        SUBARU,
+        ISUZU,
+        DAIHATSU
     ]
 
     @classmethod
-    async def request(cls, vin: str) -> tuple[Any, Any] | None:
+    async def request(cls, vin: str, brand: str = None) -> tuple[Any, Any] | None:
+
+        if brand:
+            brand = int(brand.replace('date_production_brand_', ''))
 
         links = {
             "toydiy": {
@@ -265,15 +282,30 @@ class DateProduction:
             "emex": {
                 "url": "https://emex.ru/api/parts/vin",
                 "data": {"vin": vin}
-             }
+             },
+            "local_api": {
+                "url": f"http://localhost:3000/api?company={brand}&vincode={vin}",
+                "data": None,
+                "brand": brand
+            }
         }
 
-        date = await cls.request_to_emex(links['emex'])
-
-        if date is None:
-            date = await cls.request_to_toydiy(links['toydiy'])
+        date = await cls.request_to_local_api(links['local_api'])
 
         return date
+
+    @classmethod
+    async def request_to_local_api(cls, link: dict = None) -> Any | None:
+        try:
+            response_api = await client.request_text(url=link['url'])
+            date = response_api.json()[0][1]["Дата выпуска"]
+            brand_str = ""
+            for brand in cls.BRANDS:
+                if brand == f"date_production_brand_{link['brand']}":
+                    brand_str = brand.__str__()
+            return date, brand_str
+        except:
+            return
 
     @classmethod
     async def request_to_toydiy(cls, link: dict = None) -> tuple[Any, Any] | None:
