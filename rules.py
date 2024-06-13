@@ -340,7 +340,7 @@ class DateProduction:
     async def request_to_local_api(cls, link: dict = None) -> Any | None:
         try:
             response_api = await client.request_text(url=link['url'])
-
+            print(response_api)
             date = decode(response_api)
             if len(date) != 0:
                 return
