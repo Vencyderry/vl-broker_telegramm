@@ -246,15 +246,15 @@ class DateProduction:
         VIN_NUMBER
     ]
 
-    TOYOTA = "date_production_brand_1"
-    NISSAN = "date_production_brand_2"
-    MAZDA = "date_production_brand_3"
-    MITSUBISHI = "date_production_brand_4"
-    HONDA = "date_production_brand_5"
-    SUZUKI = "date_production_brand_6"
-    SUBARU = "date_production_brand_7"
-    ISUZU = "date_production_brand_8"
-    DAIHATSU = "date_production_brand_9"
+    TOYOTA = "date_production_brand_4"
+    NISSAN = "date_production_brand_1"
+    MAZDA = "date_production_brand_8"
+    MITSUBISHI = "date_production_brand_2"
+    HONDA = "date_production_brand_9"
+    SUZUKI = "date_production_brand_5"
+    SUBARU = "date_production_brand_6"
+    ISUZU = "date_production_brand_3"
+    DAIHATSU = "date_production_brand_7"
 
     BRANDS = [
         TOYOTA,
