@@ -89,8 +89,8 @@ def message_unfound(brand: str = None) -> str:
 
 def message_found(brand: str, date: str) -> str:
     mess = f"""
-{HTMLFormatter(escape(f"🔹Дата выпуска автомобиля {brand}: "))}{HTMLFormatter(bold(f"{date} г."))}
-{HTMLFormatter(escape(f"📌В таможенных органах для расчёта таможенных платежей будут отталкиваться от: "))}{HTMLFormatter(bold(f"15.{date} г."))}
+{HTMLFormatter(escape(f"🔹Дата выпуска автомобиля {brand}: "))}{HTMLFormatter(bold(f"{date}"))}
+{HTMLFormatter(escape(f"📌В таможенных органах для расчёта таможенных платежей будут отталкиваться от: "))}{HTMLFormatter(bold(f"15.{date}"))}
 """
     return mess
 
