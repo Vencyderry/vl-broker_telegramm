@@ -11,7 +11,7 @@ from telegrinder.modules import logger
 from telegrinder.types import Nothing
 from telegrinder.tools import italic, escape, HTMLFormatter
 
-from typing import List, Any, Coroutine, Tuple
+from typing import List, Any, Coroutine, Tuple, Optional
 from client import ctx, client
 from tools import decode
 
@@ -310,6 +310,42 @@ class DateProduction:
             date = date.replace("декабрь ", "12.")
         return date
 
+    @staticmethod
+    def extract_date(text: str) -> str:
+
+        text = DateProduction.format_date(text)
+
+        patterns = [
+            r'(\d{2})[ .](\d{2})[ .](\d{4})',  # DD.MM.YYYY or DD MM.YYYY
+            r'(\d{2})[ .](\d{4})',  # MM.YYYY or MM YYYY
+            r'(\d{4})'  # YYYY
+        ]
+        year = None
+        month = None
+        day = None
+        for pattern in patterns:
+            match = re.search(pattern, text)
+            if match:
+                if len(match.groups()) == 3:  # DD.MM.YYYY or DD MM.YYYY
+                    day, month, year = map(int, match.groups())
+                    break
+                elif len(match.groups()) == 2:  # MM.YYYY or MM YYYY
+                    month, year = map(int, match.groups())
+                    break
+                elif len(match.groups()) == 1:  # YYYY
+                    year = int(match.group(1))
+                    break
+
+        result = (f"{0 if day and day < 10 else ''}"
+                  f"{day if day else ''}"
+                  f"{'.' if day and month else ''}"
+                  f"{0 if month and month < 10 else ''}"
+                  f"{month if month else ''}"
+                  f"{'.' if month and year else ''}"
+                  f"{year if year else ''}")
+
+        return result
+
     @classmethod
     async def request(cls, vin: str, brand: str = None) -> tuple[Any, Any] | None:
 
@@ -350,7 +386,7 @@ class DateProduction:
             else:
                 date = date[0]["description"]
 
-            return cls.format_date(date), cls.ID_BRANDS[f"date_production_brand_{link['brand']}"]
+            return cls.extract_date(date), cls.ID_BRANDS[f"date_production_brand_{link['brand']}"]
         except:
             return
 

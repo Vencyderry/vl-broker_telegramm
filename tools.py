@@ -277,3 +277,5 @@ def detector_swear(phrase: str) -> dict:
         "fragment": fragment_,
         "only_warn": only_warn
     }
+
+
