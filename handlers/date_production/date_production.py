@@ -108,7 +108,7 @@ def message_found(brand: str, date: str) -> str:
 """
     elif yyyy:
         mess = f"""
-{HTMLFormatter(escape(f"🔹Дата выпуска автомобиля {brand}: "))}{HTMLFormatter(bold(f"{date}"))}
+{HTMLFormatter(escape(f"🔹Год выпуска автомобиля {brand}: "))}{HTMLFormatter(bold(f"{date}"))}
 """
 
     return mess
