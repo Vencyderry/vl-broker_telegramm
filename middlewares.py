@@ -106,11 +106,9 @@ class SwearFilterMiddleware(ABCMiddleware[Message]):
 
     async def post(self, event: Message, responses: list, ctx: Context):
         try:
-
             if str(event.chat.id) == USERS_CHAT:
                 if event.text is not Nothing:
                     detect = detector_swear(event.text.unwrap().lower())
-
                     if detect['result']:
 
                         if event.from_.unwrap().username == Nothing:

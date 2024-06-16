@@ -259,17 +259,30 @@ def detector_swear(phrase: str) -> dict:
     # Проходимся по всем словам.
     for word in words_swear:
         # Разбиваем слово на части, и проходимся по ним.
-        for part in range(len(phrase)):
-            # Вот сам наш фрагмент.
-            fragment = phrase[part: part+len(word)]
+        for word_phrase in phrase.split():
             # Если отличие этого фрагмента меньше или равно 16% этого слова, то считаем, что они равны.
-            if distance(fragment, word) <= len(word)*0.166666667:
+            if distance(word_phrase, word) <= len(word)*0.166666667:
                 # Если они равны, выводим надпись о их нахождении.
 
                 word_ = word
-                fragment_ = fragment
+                fragment_ = word_phrase
                 search = True
                 only_warn = False
+
+    # Проходимся по всем словам.
+    # for word in words_swear:
+    #     # Разбиваем слово на части, и проходимся по ним.
+    #     for part in range(len(phrase)):
+    #         # Вот сам наш фрагмент.
+    #         fragment = phrase[part: part+len(word)]
+    #         # Если отличие этого фрагмента меньше или равно 16% этого слова, то считаем, что они равны.
+    #         if distance(fragment, word) <= len(word)*0.166666667:
+    #             # Если они равны, выводим надпись о их нахождении.
+    #
+    #             word_ = word
+    #             fragment_ = fragment
+    #             search = True
+    #             only_warn = False
 
     return {
         "result": search,
