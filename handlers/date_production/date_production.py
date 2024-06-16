@@ -89,13 +89,28 @@ def message_unfound(brand: str = None) -> str:
 
 
 def message_found(brand: str, date: str) -> str:
-    pattern = r'^\d{2}\.\d{2}\.\d{4}$'
-    dd_mm_yyyy = bool(re.match(pattern, date))
 
-    mess = f"""
+    dd_mm_yyyy = bool(re.match(r'^\d{2}\.\d{2}\.\d{4}$', date))
+    mm_yyyy = bool(re.match(r'^\d{2}\.\d{4}$', date))
+    yyyy = bool(re.match(r'^\d{4}$', date))
+
+    mess = "DEFAULT"
+
+    if dd_mm_yyyy:
+        mess = f"""
 {HTMLFormatter(escape(f"🔹Дата выпуска автомобиля {brand}: "))}{HTMLFormatter(bold(f"{date}"))}
-{HTMLFormatter(escape(f"📌В таможенных органах для расчёта таможенных платежей будут отталкиваться от: "))}{HTMLFormatter(bold(f"{date if dd_mm_yyyy else '15.' + date}"))}
+{HTMLFormatter(escape(f"📌В таможенных органах для расчёта таможенных платежей будут отталкиваться от: "))}{HTMLFormatter(bold(date))}
 """
+    elif mm_yyyy:
+        mess = f"""
+{HTMLFormatter(escape(f"🔹Дата выпуска автомобиля {brand}: "))}{HTMLFormatter(bold(f"{date}"))}
+{HTMLFormatter(escape(f"📌В таможенных органах для расчёта таможенных платежей будут отталкиваться от: "))}{HTMLFormatter(bold('15.' + date))}
+"""
+    elif yyyy:
+        mess = f"""
+{HTMLFormatter(escape(f"🔹Дата выпуска автомобиля {brand}: "))}{HTMLFormatter(bold(f"{date}"))}
+"""
+
     return mess
 
 
