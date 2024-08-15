@@ -151,7 +151,9 @@ class Calculator:
     YEAR_ADDITION = "year_addition"
     VOLUME = "volume"
     POWER = "power"
+    POWER_SUM = "power_sum"
     ENGINE = "engine"
+    HYBRID = "hybrid"
 
     MOTO_STAGES = [
         STRATEGY,
@@ -170,7 +172,6 @@ class Calculator:
         PRICE,
         ENGINE,
         YEAR,
-        YEAR_ADDITION,
         VOLUME,
         POWER
     ]
@@ -186,6 +187,9 @@ class Calculator:
 
     MSG_POWER = (f"{HTMLFormatter(escape('🔹Укажите мощность в л.с.:'))}\n"
                  f"{HTMLFormatter(italic(escape('В формате, например: 144')))}")
+
+    MSG_POWER_SUM = (f"{HTMLFormatter(escape('🔹Укажите cуммарную 30 минутную полезные мощности всех электромоторов'))}\n"
+                     f"{HTMLFormatter(italic(escape('В формате, например: 144')))}")
 
 
 class DateProduction:

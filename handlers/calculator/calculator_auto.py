@@ -46,6 +46,12 @@ ENGINE_KEYBOARD = (
     .add(InlineButton("Вернуться назад", callback_data="calculator_auto_cancel"))
 ).get_markup()
 
+HYBRID_KEYBOARD = (
+    InlineKeyboard()
+    .add(InlineButton("Параллельный гибрид", callback_data="hybrid_1")).row()
+    .add(InlineButton("Последовательный гибрид", callback_data="hybrid_0")).row()
+).get_markup()
+
 YEAR_ADDITION_KEYBOARD = (
     InlineKeyboard()
     .add(InlineButton("Да", callback_data="year_yes"))
@@ -199,14 +205,50 @@ async def calculator_auto_engine(message: Message) -> None:
         await executor.logger(message, intermediate=True)
 
 
-@dp.callback_query(CallbackDataStartsWith("engine") & Calculator.CallbackQuery(Calculator.ENGINE, Calculator.AUTO))
-async def calculator_auto_year(cq: CallbackQuery) -> None:
+@dp.callback_query(CallbackDataEqs(["engine_be", "engine_de"]) & Calculator.CallbackQuery(Calculator.ENGINE, Calculator.AUTO))
+async def calculator_auto_hybrid_type(cq: CallbackQuery) -> None:
     try:
         message = cq.message.unwrap().v
 
         calculator = ctx.get(f"calculator_{cq.from_.id}")
         if "engine_" in cq.data.unwrap():
             calculator["engine"] = cq.data.unwrap().replace("engine_", "")
+        ctx.set(f"calculator_{cq.from_.id}", calculator)
+
+        await delete_mess(message.chat.id)
+        response = await api.send_message(text="🔹Выберите вид гибридного авто:",
+                                          chat_id=cq.message.unwrap().v.chat.id,
+                                          reply_markup=HYBRID_KEYBOARD,
+                                          parse_mode=fmt.PARSE_MODE)
+        await save_mess(response.unwrap())
+
+        await Calculator.set(message.chat.id, Calculator.HYBRID, Calculator.AUTO)
+
+    except Exception:
+        executor.traceback = traceback.format_exc()
+    finally:
+        await executor.logger(cq, intermediate=True)
+
+
+@dp.callback_query((CallbackDataStartsWith("engine") & Calculator.CallbackQuery(Calculator.ENGINE, Calculator.AUTO))
+                   |
+                   (CallbackDataStartsWith("hybrid") & Calculator.CallbackQuery(Calculator.HYBRID, Calculator.AUTO))
+                   )
+async def calculator_auto_year(cq: CallbackQuery) -> None:
+    try:
+        message = cq.message.unwrap().v
+
+        calculator = ctx.get(f"calculator_{cq.from_.id}")
+
+        if "engine_" in cq.data.unwrap():
+            calculator["engine"] = cq.data.unwrap().replace("engine_", "")
+
+        if "hybrid_" in cq.data.unwrap():
+            calculator["hybrid"] = int(cq.data.unwrap().replace("hybrid_", ""))
+
+        if "hybrid" not in calculator:
+            calculator["hybrid"] = 2
+
         ctx.set(f"calculator_{cq.from_.id}", calculator)
 
         await delete_mess(message.chat.id)
@@ -327,13 +369,52 @@ async def calculator_auto_power(message: Message) -> None:
             ctx.set(f"calculator_{message.from_.unwrap().id}", calculator)
 
         await delete_mess(message.chat.id)
-        response = await api.send_message(text=Calculator.MSG_POWER,
-                                          chat_id=message.chat.id,
-                                          reply_markup=CANCEL_KEYBOARD,
-                                          parse_mode=fmt.PARSE_MODE)
+        if calculator["engine"] in ["e", "de", "be"]:
+            response = await api.send_message(text=Calculator.MSG_POWER_SUM,
+                                              chat_id=message.chat.id,
+                                              parse_mode=fmt.PARSE_MODE)
+            await Calculator.set(message.chat.id, Calculator.POWER_SUM, Calculator.AUTO)
+        else:
+            response = await api.send_message(text=Calculator.MSG_POWER,
+                                              chat_id=message.chat.id,
+                                              reply_markup=CANCEL_KEYBOARD,
+                                              parse_mode=fmt.PARSE_MODE)
+            await Calculator.set(message.chat.id, Calculator.POWER, Calculator.AUTO)
+
         await save_mess(response.unwrap())
 
-        await Calculator.set(message.chat.id, Calculator.POWER, Calculator.AUTO)
+    except Exception:
+        executor.traceback = traceback.format_exc()
+    finally:
+        await executor.logger(message, intermediate=True)
+
+
+@dp.message(Calculator.Message(Calculator.POWER_SUM, Calculator.AUTO))
+async def calculator_auto_power_sum(message: Message) -> None:
+    try:
+        calculator = ctx.get(f"calculator_{message.from_.unwrap().id}")
+
+        if not message.text.unwrap().isdigit():
+            await delete_mess(message.chat.id)
+            response = await api.send_message(text=Calculator.MSG_POWER_SUM,
+                                              chat_id=message.chat.id,
+                                              parse_mode=fmt.PARSE_MODE)
+            await save_mess(response.unwrap())
+            return
+
+        calculator["power_sum"] = int(message.text.unwrap())
+        ctx.set(f"calculator_{message.from_.unwrap().id}", calculator)
+
+        if calculator["hybrid"]:
+            await delete_mess(message.chat.id)
+            response = await api.send_message(text=Calculator.MSG_POWER,
+                                              chat_id=message.chat.id,
+                                              reply_markup=CANCEL_KEYBOARD,
+                                              parse_mode=fmt.PARSE_MODE)
+            await save_mess(response.unwrap())
+            await Calculator.set(message.chat.id, Calculator.POWER, Calculator.AUTO)
+        else:
+            await calculator_auto_finish.func(message)
 
     except Exception:
         executor.traceback = traceback.format_exc()
@@ -346,7 +427,7 @@ async def calculator_auto_finish(message: Message) -> None:
     try:
         calculator = ctx.get(f"calculator_{message.from_.unwrap().id}")
 
-        if not message.text.unwrap().isdigit() and message.text.unwrap() != "":
+        if not message.text.unwrap().isdigit() and message.text.unwrap() != "" and (calculator['hybrid'] or calculator['hybrid'] == 2):
             await delete_mess(message.chat.id)
             response = await api.send_message(text=Calculator.MSG_POWER,
                                               chat_id=message.chat.id,
@@ -368,8 +449,9 @@ async def calculator_auto_finish(message: Message) -> None:
                                                  f"m={calculator['engine']}&"
                                                  f"year={calculator['year']}&"
                                                  f"v={1 if calculator['volume'] == 0 else calculator['volume']}&"
-                                                 f"p={calculator['power']}&"
-                                                 f"ymin={calculator['power']}&"
+                                                 f"p={calculator['power'] if calculator['hybrid'] or calculator['hybrid'] == 2 else calculator['power_sum']}&"
+                                                 f"ymin={calculator['ymin']}&"
+                                                 f"emin={calculator['hybrid']}&"
                                                  )
 
         await delete_mess(message.chat.id)
