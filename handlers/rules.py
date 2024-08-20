@@ -25,7 +25,7 @@ executor_get_rules_cq = DispatchExecutor(title="get_rules",
 @dp.callback_query(CallbackDataEq("rules"))
 async def rules_cq(cq: CallbackQuery) -> None:
     try:
-        message = cq.message.unwrap().only()
+        message = cq.message.unwrap().v
 
         await delete_mess(message.chat.id)
         response = await api.send_message(text=MESSAGE_RULES,
@@ -54,13 +54,10 @@ async def rules_message(message: Message) -> None:
         if now < user.cooldown_rules:
             response = await message.answer(ERROR_COOLDOWN_RULES)
             await asyncio.sleep(1.5)
-            print(message.chat.id)
-            print("\n")
-            print(message.message_id)
-            print(response.unwrap().message_id)
+
             response_dlt = await api.delete_messages(chat_id=message.chat.id,
                                                      message_ids=[message.message_id]) #response.unwrap().message_id
-            print(response_dlt)
+
             return
         response = await api.send_message(text=MESSAGE_RULES,
                                           chat_id=message.chat.id,

@@ -21,6 +21,7 @@ kb = (
     .add(InlineButton("Смотреть полезные видео", callback_data="useful_menu")).row()
     .add(InlineButton("Войти в личный кабинет", callback_data="personal_office")).row()
     .add(InlineButton("Узнать ответы на частые вопросы", callback_data="faq_menu")).row()
+    .add(InlineButton("Правила чата VL-BROKER", callback_data="rules")).row()
     .add(InlineButton("Перейти в чат VL-BROKER", url="https://t.me/+k9w6qxLAOiEwMWJi"))
 ).get_markup()
 
