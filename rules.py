@@ -185,7 +185,7 @@ class Calculator:
     MSG_VOLUME = (f"{HTMLFormatter(escape('🔹Укажите объем двигателя:'))}\n"
                   f"{HTMLFormatter(italic(escape('В формате, например: 1500')))}")
 
-    MSG_POWER = (f"{HTMLFormatter(escape('🔹Укажите мощность в л.с.:'))}\n"
+    MSG_POWER = (f"{HTMLFormatter(escape('🔹Укажите мощность ДВС в л.с.:'))}\n"
                  f"{HTMLFormatter(italic(escape('В формате, например: 144')))}")
 
     MSG_POWER_SUM = (f"{HTMLFormatter(escape('🔹Укажите cуммарную 30 минутную полезные мощности всех электромоторов'))}\n"
@@ -420,3 +420,39 @@ class DateProduction:
             return response_api[0]["date"], response_api[0]["brand"]
         except:
             return
+
+
+class Distribution(MessageRule):
+    def __init__(self, state: str):
+        self.state = state
+
+    async def check(self, message: Message, ctx_: Context) -> bool:
+        ctx_state = ctx.get(f"distribution_state:{message.chat.id}")
+
+        if message.chat.type == ChatType.PRIVATE:
+            if ctx_state:
+                if ctx_state == self.state:
+                    return True
+
+        return False
+
+    @staticmethod
+    async def get(target: int) -> dict | None:
+        state = ctx.get(f"distribution_state:{target}")
+        if state:
+            return state
+        return None
+
+    @staticmethod
+    async def set(target: int, state: str) -> None:
+        ctx.set(f"distribution_state:{target}", state)
+
+    @staticmethod
+    async def delete(target: int) -> None:
+        ctx.delete(f"distribution_state:{target}")
+
+    TEXT = "text"
+
+    STAGES = [
+        TEXT
+    ]
