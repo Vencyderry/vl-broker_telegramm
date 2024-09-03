@@ -70,13 +70,11 @@ async def distribution_text(message: Message) -> None:
 
 
 @dp.callback_query(CallbackDataStartsWith("distribution"))
-async def calculator_auto_cancel(cq: CallbackQuery) -> None:
+async def distribution_confirm(cq: CallbackQuery) -> None:
     try:
         confirm = int(cq.data.unwrap().replace("distribution:", ""))
 
         users = get_users_all()
-
-        users = [7022086113, 7028770823, 113431]
 
         if confirm:
             message_id = ctx.get("distribution")["message_id"]
@@ -111,9 +109,9 @@ async def start_distribution(users: list[User], from_chat_id: int, message_id) -
             await asyncio.sleep(3)
 
         try:
-            response = await send_distribution(user, from_chat_id, message_id)
+            responses = await send_distribution(user.tgid, from_chat_id, message_id)
 
-            if not hasattr(response, "error"):
+            if not hasattr(responses[0], "error"):
                 counter += 1
 
         except Exception:
@@ -121,13 +119,24 @@ async def start_distribution(users: list[User], from_chat_id: int, message_id) -
 
     return counter
 
+APP_KEYBOARD = (
+    InlineKeyboard()
+    .add(InlineButton("Оставить заявку", callback_data="app"))
+).get_markup()
+
 
 async def send_distribution(user: User, from_chat_id: int, message_id) -> Any:
     response = await api.forward_message(chat_id=user,
                                          from_chat_id=from_chat_id,
                                          message_id=message_id
                                          )
-    return response
+
+    response2 = await api.send_message(chat_id=user,
+                                       text=HTMLFormatter(bold("Воспользуйтесь выгодным предложением:")),
+                                       parse_mode=fmt.PARSE_MODE,
+                                       reply_markup=APP_KEYBOARD
+                                       )
+    return [response, response2]
 
 # @dp.message(Command("рассылка", Argument("text_msg"), separator="-"))
 # async def distribution(message: Message, text_msg) -> None:
