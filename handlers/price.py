@@ -41,7 +41,7 @@ PRICE = f"""
 {HTMLFormatter(bold("Дополнительные услуги к основному договору:"))}
 {HTMLFormatter(escape("*️⃣экспедирование контейнера с автомобилем — "))}{HTMLFormatter(bold("10 000 ₽"))}
 {HTMLFormatter(escape("*️⃣корректировка коносамента — "))}{HTMLFormatter(bold("3 000 ₽"))}
-{HTMLFormatter(escape("*️⃣оформление СБКТС и ЭПТС автомобиля — "))}{HTMLFormatter(bold("25 000 ₽"))}
+{HTMLFormatter(escape("*️⃣оформление СБКТС и ЭПТС автомобиля — "))}{HTMLFormatter(bold("20 000 ₽"))}
 {HTMLFormatter(escape("*️⃣оформление СБКТС и ЭПТС мотоцикла — "))}{HTMLFormatter(bold("15 000 ₽"))}
 {HTMLFormatter(escape("*️⃣ЗОЕТС и ЭПТС "))}{HTMLFormatter(italic(escape("(только для юрлиц; ТС до 3 лет) — ")))}{HTMLFormatter(bold("индивидуально"))}
 {HTMLFormatter(escape("*️⃣устройство ЭРА-ГЛОНАСС "))}{HTMLFormatter(italic(escape("(только для юрлиц)")))}{HTMLFormatter(escape(" — "))}{HTMLFormatter(bold("35 000 ₽"))}
