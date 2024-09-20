@@ -34,6 +34,7 @@ CURRENCY_KEYBOARD = (
     .add(InlineButton("Доллар США", callback_data="currency_usd")).row()
     .add(InlineButton("Японская иена", callback_data="currency_jpy")).row()
     .add(InlineButton("Южнокорейская вона", callback_data="currency_krw")).row()
+    .add(InlineButton("Китайский юань", callback_data="currency_cny")).row()
     .add(InlineButton("Вернуться назад", callback_data="calculator_moto_cancel"))
 ).get_markup()
 
