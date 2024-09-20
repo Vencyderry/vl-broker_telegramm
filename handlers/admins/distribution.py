@@ -75,6 +75,8 @@ async def distribution_confirm(cq: CallbackQuery) -> None:
         confirm = int(cq.data.unwrap().replace("distribution:", ""))
 
         users = get_users_all()
+        #
+        # users = [7022086113, 7028770823, 113431]
 
         if confirm:
             message_id = ctx.get("distribution")["message_id"]
@@ -109,7 +111,7 @@ async def start_distribution(users: list[User], from_chat_id: int, message_id) -
             await asyncio.sleep(3)
 
         try:
-            responses = await send_distribution(user.tgid, from_chat_id, message_id)
+            responses = await send_distribution(user, from_chat_id, message_id)
 
             if not hasattr(responses[0], "error"):
                 counter += 1
