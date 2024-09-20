@@ -23,7 +23,8 @@ SVH_KEYBOARD = (
     .add(InlineButton("СВХ «ДАЛЬКОМХОЛОД»", callback_data="info_svh_10")).row()
     .add(InlineButton("СВХ «Пасифик Лоджистик»", callback_data="info_svh_11")).row()
     .add(InlineButton("СВХ «ЧЭМК»", callback_data="info_svh_12")).row()
-    .add(InlineButton("СВХ «Соллерс»", callback_data="info_svh_13"))
+    .add(InlineButton("СВХ «Соллерс»", callback_data="info_svh_13")).row()
+    .add(InlineButton("СВХ «КОМПЛЕКСНЫЕ РЕШЕНИЯ»", callback_data="info_svh_14"))
 ).get_markup()
 
 

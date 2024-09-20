@@ -7,7 +7,7 @@ from client import api, fmt
 from tools import save_mess, delete_mess
 from rules import CallbackDataStartsWith
 from handlers.executor import ExecutorType, DispatchExecutor
-from .svh_patterns import texts
+from .svh_patterns import texts, pdfs
 
 dp = Dispatch()
 
@@ -27,6 +27,7 @@ async def svh_info(cq: CallbackQuery) -> None:
         message = cq.message.unwrap().v
 
         svh_text = texts[cq.data.unwrap()]
+        svh_pdf = pdfs[cq.data.unwrap()] if cq.data.unwrap() in pdfs else None
 
         if svh_text is None:
             svh_text = "📌Информация о данном СВХ ещё не загружена в бот."
@@ -46,6 +47,13 @@ async def svh_info(cq: CallbackQuery) -> None:
                                           reply_markup=BACK_KEYBOARD)
         await save_mess(response.unwrap())
 
+        if svh_pdf:
+            await api.send_document(chat_id=message.chat.id,
+                                    caption="📌Прайс-лист в формате PDF.",
+                                    document=svh_pdf)
+            response.unwrap().message_id += 1
+            await save_mess(response.unwrap())
+            return
 
     except Exception:
         executor_info_svh.traceback = traceback.format_exc()
