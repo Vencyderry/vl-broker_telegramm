@@ -15,7 +15,8 @@ from . import (
     info_svh,
     useful,
     faq,
-    date_production
+    date_production,
+    promotions
 )
 
 single_handlers = [
@@ -35,6 +36,7 @@ groups_handlers = [
     useful.group_handlers,
     faq.group_handlers,
     date_production.group_handlers,
+    promotions.group_handlers,
     single_handlers
 ]
 
