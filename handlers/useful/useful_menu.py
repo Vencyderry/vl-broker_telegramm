@@ -12,8 +12,14 @@ dp = Dispatch()
 
 USEFUL_KEYBOARD = (
     InlineKeyboard()
-    .add(InlineButton("Как зарегистрироваться в СЭП?", callback_data="useful_video_1")).row()
-    .add(InlineButton("Как оплатить через Сбербанк?", callback_data="useful_video_2")).row()
+    .add(InlineButton("Процесс таможенного оформления", callback_data="useful_video_1")).row()
+    .add(InlineButton("Перечень необходимых документов на ТО", callback_data="useful_video_2")).row()
+    .add(InlineButton("Как оплатить через Сбербанк?", callback_data="useful_video_3")).row()
+    .add(InlineButton("Как зарегистрироваться в СЭП?", callback_data="useful_video_4")).row()
+    .add(InlineButton("Всё об утилизационном сборе", callback_data="useful_video_5")).row()
+    .add(InlineButton("Причины \"перестоя\" на СВХ", callback_data="useful_video_6")).row()
+    .add(InlineButton("Параллельный импорт в Россию", callback_data="useful_video_7")).row()
+    .add(InlineButton("Как выбрать товары для импорта?", callback_data="useful_video_8")).row()
 ).get_markup()
 
 
