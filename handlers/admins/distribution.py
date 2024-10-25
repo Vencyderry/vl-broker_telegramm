@@ -75,7 +75,7 @@ async def distribution_confirm(cq: CallbackQuery) -> None:
         confirm = int(cq.data.unwrap().replace("distribution:", ""))
 
         users = get_users_all()
-        #
+
         # users = [7022086113, 7028770823, 113431]
 
         if confirm:
@@ -128,12 +128,12 @@ APP_KEYBOARD = (
 
 
 async def send_distribution(user: User, from_chat_id: int, message_id) -> Any:
-    response = await api.forward_message(chat_id=user,
+    response = await api.forward_message(chat_id=user.tgid,
                                          from_chat_id=from_chat_id,
                                          message_id=message_id
                                          )
 
-    response2 = await api.send_message(chat_id=user,
+    response2 = await api.send_message(chat_id=user.tgid,
                                        text=HTMLFormatter(bold("Воспользуйтесь выгодным предложением:")),
                                        parse_mode=fmt.PARSE_MODE,
                                        reply_markup=APP_KEYBOARD
