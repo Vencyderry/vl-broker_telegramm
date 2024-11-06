@@ -89,6 +89,8 @@ async def delete_mess(chat_id):
                 messages.remove(messages[0])
             ctx.set(f"messages_{chat_id}", messages)
 
+    ctx.delete(f"messages_{chat_id}")
+
 
 class Swear:
 

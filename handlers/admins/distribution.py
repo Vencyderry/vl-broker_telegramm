@@ -6,11 +6,11 @@ from client import api, fmt, ctx
 from handlers.executor import ExecutorType, DispatchExecutor
 from permissions_store import is_admin
 from patterns import ERROR_PERMISSION
-from operations import get_system, get_users_all
+from operations import get_system, get_users_all, get_users
 from models import User
 from typing import Any
 
-from tools import digit, delete_mess, save_mess
+from tools import digit, delete_mess, save_mess, time_converter
 from rules import CallbackDataStartsWith, Distribution
 
 from telegrinder.tools import bold, escape, HTMLFormatter, link
@@ -20,6 +20,13 @@ from telegrinder.types import ReplyParameters
 
 dp = Dispatch()
 
+
+ADD_MESSAGE_KEYBOARD = (
+    InlineKeyboard()
+    .add(InlineButton("Оставить заявку", callback_data="add_message:2")).row()
+    .add(InlineButton("Оставить отзыв", callback_data="add_message:1")).row()
+    .add(InlineButton("❌", callback_data="add_message:0"))
+).get_markup()
 
 CONFIRM_KEYBOARD = (
     InlineKeyboard()
@@ -54,19 +61,48 @@ async def distribution(message: Message) -> None:
 @dp.message(Distribution(Distribution.TEXT))
 async def distribution_text(message: Message) -> None:
     try:
-        users = get_users_all()
         ctx.set("distribution", {"message_id": message.message_id, "from_chat_id": message.chat.id})
 
-        response = await message.answer(text=f"📌 Подтвердите отправку рассылки {digit(len(users))} пользователям.\n\n",
-                                        reply_markup=CONFIRM_KEYBOARD)
+        response = await message.answer(text=f"🧾 Выберите дополнительное сообщение или его отсутствие.\n\n",
+                                        reply_markup=ADD_MESSAGE_KEYBOARD)
         await save_mess(response.unwrap())
 
-        await Distribution.delete(message.chat.id)
+        # удаление пересланного сообщения
+        messages_storage = ctx.get(f"messages_{message.chat.id}")
+        messages_storage.remove(message.message_id)
+        ctx.set(f"messages_{message.chat.id}", messages_storage)
+
+        await Distribution.set(message.chat.id, Distribution.ADD_MESSAGE)
 
     except Exception:
         executor.traceback = traceback.format_exc()
     finally:
         await executor.logger(message, intermediate=True)
+
+
+@dp.callback_query(CallbackDataStartsWith("add_message"))
+async def distribution_add_message(cq: CallbackQuery) -> None:
+    try:
+        users = get_users_all()
+        distribution = ctx.get("distribution")
+
+        type_add_message = int(cq.data.unwrap().replace("add_message:", ""))
+        distribution["type_add_message"] = type_add_message
+
+        ctx.set("distribution", distribution)
+
+        response = await api.send_message(chat_id=cq.message.unwrap().v.chat.id,
+                                          text=f"📌 Подтвердите отправку рассылки {digit(len(users))} пользователям.\n\n",
+                                          reply_markup=CONFIRM_KEYBOARD
+                                          )
+        await save_mess(response.unwrap())
+
+        await Distribution.delete(cq.message.unwrap().v.chat.id)
+
+    except Exception:
+        executor.traceback = traceback.format_exc()
+    finally:
+        await executor.logger(cq, intermediate=True)
 
 
 @dp.callback_query(CallbackDataStartsWith("distribution"))
@@ -75,26 +111,35 @@ async def distribution_confirm(cq: CallbackQuery) -> None:
         confirm = int(cq.data.unwrap().replace("distribution:", ""))
 
         users = get_users_all()
+        # users = get_users("group", "Admin")
 
         # users = [7022086113, 7028770823, 113431]
 
         if confirm:
-            message_id = ctx.get("distribution")["message_id"]
-            from_chat_id = ctx.get("distribution")["from_chat_id"]
-
-            count = await start_distribution(users, from_chat_id, message_id)
+            distribution_ = ctx.get("distribution")
+            message_id = distribution_["message_id"]
+            from_chat_id = distribution_["from_chat_id"]
+            type_add_message = distribution_["type_add_message"]
 
             await delete_mess(cq.message.unwrap().v.chat.id)
+
+            time = time_converter(((len(users) // 20) * 3 + len(users) * 0.5), 0)
+            await api.send_message(chat_id=cq.message.unwrap().v.chat.id,
+                                   text=f"⏱️ Рассылка запущена, примерный расчет полной отправки рассылки ~{time}"
+                                   )
+
+            count = await start_distribution(users, from_chat_id, message_id, type_add_message)
+
             message_result = f"✅ Рассылка успешно отправлена {digit(count)}/{digit(len(users))} пользователям."
 
         else:
-            ctx.delete(f"distribution")
             message_result = f"✅ Рассылка отменена."
+
+        ctx.delete(f"distribution")
 
         await api.send_message(chat_id=cq.message.unwrap().v.chat.id,
                                text=message_result
                                )
-
 
     except Exception:
         executor.traceback = traceback.format_exc()
@@ -102,7 +147,7 @@ async def distribution_confirm(cq: CallbackQuery) -> None:
         await executor.logger(cq, intermediate=True)
 
 
-async def start_distribution(users: list[User], from_chat_id: int, message_id) -> int:
+async def start_distribution(users: list[User], from_chat_id: int, message_id, type_add_message) -> int:
     counter = 0
 
     for user in users:
@@ -111,9 +156,9 @@ async def start_distribution(users: list[User], from_chat_id: int, message_id) -
             await asyncio.sleep(3)
 
         try:
-            responses = await send_distribution(user, from_chat_id, message_id)
+            response = await send_distribution(user, from_chat_id, message_id, type_add_message)
 
-            if not hasattr(responses[0], "error"):
+            if not hasattr(response, "error"):
                 counter += 1
 
         except Exception:
@@ -121,24 +166,47 @@ async def start_distribution(users: list[User], from_chat_id: int, message_id) -
 
     return counter
 
-APP_KEYBOARD = (
+ADD_MESSAGE_KEYBOARD_2 = (
     InlineKeyboard()
     .add(InlineButton("Оставить заявку", callback_data="app"))
 ).get_markup()
 
+ADD_MESSAGE_KEYBOARD_1 = (
+    InlineKeyboard()
+    .add(InlineButton("Оставить отзыв", url="https://vk.com/reviews-211743331"))
+).get_markup()
 
-async def send_distribution(user: User, from_chat_id: int, message_id) -> Any:
+
+async def send_distribution(user: User, from_chat_id: int, message_id, type_add_message) -> Any:
+    responses = []
+    message_log = f"[{user.tgid}] | "
+
     response = await api.forward_message(chat_id=user.tgid,
                                          from_chat_id=from_chat_id,
                                          message_id=message_id
                                          )
 
-    response2 = await api.send_message(chat_id=user.tgid,
-                                       text=HTMLFormatter(bold("Воспользуйтесь выгодным предложением:")),
-                                       parse_mode=fmt.PARSE_MODE,
-                                       reply_markup=APP_KEYBOARD
-                                       )
-    return [response, response2]
+    message_log += f"{response.unwrap().message_id} | "
+
+    if type_add_message == 2:
+        response_ = await api.send_message(chat_id=user.tgid,
+                                           text=HTMLFormatter(bold("Воспользуйтесь выгодным предложением:")),
+                                           parse_mode=fmt.PARSE_MODE,
+                                           reply_markup=ADD_MESSAGE_KEYBOARD_2
+                                           )
+        message_log += f"{response_.unwrap().message_id} | "
+
+    elif type_add_message == 1:
+        response_ = await api.send_message(chat_id=user.tgid,
+                                           text=HTMLFormatter(bold("Участвуйте в розыгрыше 10 000 рублей!")),
+                                           parse_mode=fmt.PARSE_MODE,
+                                           reply_markup=ADD_MESSAGE_KEYBOARD_1
+                                           )
+        message_log += f"{response_.unwrap().message_id}"
+
+    print(message_log)
+
+    return response
 
 # @dp.message(Command("рассылка", Argument("text_msg"), separator="-"))
 # async def distribution(message: Message, text_msg) -> None:
@@ -225,5 +293,3 @@ async def send_distribution(user: User, from_chat_id: int, message_id) -> Any:
 #             pass
 #
 #     return counter
-
-

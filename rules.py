@@ -452,7 +452,9 @@ class Distribution(MessageRule):
         ctx.delete(f"distribution_state:{target}")
 
     TEXT = "text"
+    ADD_MESSAGE = "add_message"
 
     STAGES = [
-        TEXT
+        TEXT,
+        ADD_MESSAGE
     ]
