@@ -42,6 +42,7 @@ PRICE = f"""
 {HTMLFormatter(escape("*️⃣таможенное оформление декларации на запчасти и оборудование — "))}{HTMLFormatter(bold("от 15 000 ₽"))}
 
 {HTMLFormatter(bold("Дополнительные услуги к основному договору:"))}
+{HTMLFormatter(escape("*️⃣таможенное оформление вложений — "))}{HTMLFormatter(bold("1 500 ₽"))}
 {HTMLFormatter(escape("*️⃣экспедирование контейнера с автомобилем — "))}{HTMLFormatter(bold("10 000 ₽"))}
 {HTMLFormatter(escape("*️⃣корректировка коносамента — "))}{HTMLFormatter(bold("3 000 ₽"))}
 {HTMLFormatter(escape("*️⃣оформление СБКТС и ЭПТС автомобиля — "))}{HTMLFormatter(bold("20 000 ₽"))}
@@ -51,6 +52,8 @@ PRICE = f"""
 {HTMLFormatter(escape("*️⃣установка ЭРА-ГЛОНАСС — "))}{HTMLFormatter(bold("1 500 ₽"))}
 {HTMLFormatter(escape("*️⃣активация ЭРА-ГЛОНАСС — "))}{HTMLFormatter(bold("4 500 ₽"))}
 {HTMLFormatter(escape("*️⃣стандартная экспертиза — "))}{HTMLFormatter(bold("от 1 000 до 1 500 ₽"))}
+{HTMLFormatter(escape("*️⃣отогрев автомобиля тепловой пушкой — "))}{HTMLFormatter(bold("8 000 ₽"))}
+{HTMLFormatter(escape("*️⃣шиномонтаж — "))}{HTMLFormatter(bold("От 3 000 ₽ + стоимость шиномонтажа"))}
 {HTMLFormatter(escape("*️⃣снятие тонировки — "))}{HTMLFormatter(bold("от 1000 ₽"))}
 {HTMLFormatter(escape("*️⃣вывоз легкового автомобиля с СВХ в лабораторию — "))}{HTMLFormatter(bold("5 500 ₽"))}
 {HTMLFormatter(escape("*️⃣вывоз мотоцикла с СВХ в лабораторию — "))}{HTMLFormatter(bold("8 000 ₽"))}
