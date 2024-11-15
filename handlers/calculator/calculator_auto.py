@@ -333,7 +333,7 @@ async def calculator_auto_year_additional(cq: CallbackQuery) -> None:
     try:
         cq_data = cq.data.unwrap()
         calculator = ctx.get(f"calculator_{cq.from_.id}")
-        calculator["ymin"] = 1 if "yes" in cq_data else 0
+        calculator["ymin"] = 0 if "yes" in cq_data else 1
         ctx.set(f"calculator_{cq.from_.id}", calculator)
 
         await delete_mess(cq.message.unwrap().v.chat.id)
