@@ -11,7 +11,7 @@ from tools import digit, time_converter
 from config import USERS_CHAT
 
 from telegrinder import InlineKeyboard, InlineButton, Dispatch, Message
-from telegrinder.rules import Text, IsPrivate
+from telegrinder.rules import Text, IsPrivate, Command
 
 dp = Dispatch()
 
@@ -22,7 +22,7 @@ executor = DispatchExecutor(title="mstatistics",
                             )
 
 
-@dp.message(Text(["/mstats"]))
+@dp.message(Command(["/mstats"]))
 async def mstats(message: Message) -> None:
     try:
         if not is_admin(message.from_.unwrap().id):
@@ -39,29 +39,29 @@ async def mstats(message: Message) -> None:
 """
         else:
             stats = f"""
-    ℹ️ Информация о боте:
-    
-    ⏱️ Аптайм:{time_converter(time.time() - system.start_time, 0)}
-    👥 Пользователей в базе: {digit(len(users))}
-    
-    📨 Статистика обработки ивентов:
-    ▶ Команд за сессию: {digit(system.commands_processed)}
-    ▶ Сообщений за сессию: {digit(system.messages_processed)}
-    ▶ Команд за все время: {digit(system.commands_processed_all)}
-    ▶ Сообщений за все время: {digit(system.messages_processed_all)}
-    
-    🤖 Статистика использования бота:
-    ▶ Команда "/start": {digit(system.statistic_start)}
-    ▶ Кнопка "Заполнить заявку": {digit(system.statistic_application)}
-    ▶ Кнопка "Открыть прайс-лист 2024": {digit(system.statistic_price)}
-    ▶ Кнопка "Узнать информацию о СВХ": {digit(system.statistic_svh)}
-    ▶ Кнопка "Узнать дату выпуска авто": {digit(system.statistic_date_production)}
-    ▶ Кнопка "Узнать курс валют": {digit(system.statistic_currency)}
-    ▶ Кнопка "Открыть калькулятор": {digit(system.statistic_calculator)}
-    ▶ Кнопка "Смотреть полезные видео": {digit(system.statistic_useful)}
-    ▶ Кнопка "Войти в личный кабинет": {digit(system.statistic_personal_office)}
-    ▶ Кнопка "Узнать ответы на частые вопросы": {digit(system.statistic_faq)}
-    """
+ℹ️ Информация о боте:
+
+⏱️ Аптайм:{time_converter(time.time() - system.start_time, 0)}
+👥 Пользователей в базе: {digit(len(users))}
+
+📨 Статистика обработки ивентов:
+▶ Команд за сессию: {digit(system.commands_processed)}
+▶ Сообщений за сессию: {digit(system.messages_processed)}
+▶ Команд за все время: {digit(system.commands_processed_all)}
+▶ Сообщений за все время: {digit(system.messages_processed_all)}
+
+🤖 Статистика использования бота:
+▶ Команда "/start": {digit(system.statistic_start)}
+▶ Кнопка "Заполнить заявку": {digit(system.statistic_application)}
+▶ Кнопка "Открыть прайс-лист 2024": {digit(system.statistic_price)}
+▶ Кнопка "Узнать информацию о СВХ": {digit(system.statistic_svh)}
+▶ Кнопка "Узнать дату выпуска авто": {digit(system.statistic_date_production)}
+▶ Кнопка "Узнать курс валют": {digit(system.statistic_currency)}
+▶ Кнопка "Открыть калькулятор": {digit(system.statistic_calculator)}
+▶ Кнопка "Смотреть полезные видео": {digit(system.statistic_useful)}
+▶ Кнопка "Войти в личный кабинет": {digit(system.statistic_personal_office)}
+▶ Кнопка "Узнать ответы на частые вопросы": {digit(system.statistic_faq)}
+"""
 
         # channel = await api.request_raw("getChannels", {"channel": USERS_CHAT}) #"-1001763293068"
         # print(channel)
