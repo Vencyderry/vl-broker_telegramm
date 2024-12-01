@@ -36,7 +36,7 @@ async def mstats(message: Message) -> None:
 ℹ️ Информация о боте:
 
 ⏱️ Аптайм:{time_converter(time.time() - system.start_time, 0)}
-👥 Пользователей в базе: {digit(len(users))}
+
 🧾 ID чата: {message.chat.id}"""
 #
 # 📨 Статистика обработки ивентов:
