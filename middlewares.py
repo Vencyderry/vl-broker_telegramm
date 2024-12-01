@@ -6,7 +6,7 @@ from telegrinder import ABCMiddleware, Message
 from telegrinder.types import Nothing, ChatType
 from telegrinder.modules import logger
 
-from config import USERS_CHAT, LOG_SWEAR_CHAT
+from config import USERS_CHAT, LOG_SWEAR_CHAT, MAIN_CHATS
 from patterns import GREETING_JOIN_CHAT
 from client import api, fmt
 from operations import *
@@ -106,7 +106,7 @@ class SwearFilterMiddleware(ABCMiddleware[Message]):
 
     async def post(self, event: Message, responses: list, ctx: Context):
         try:
-            if str(event.chat.id) == USERS_CHAT:
+            if str(event.chat.id) in MAIN_CHATS:
                 if event.text is not Nothing:
                     detect = detector_swear(event.text.unwrap().lower())
                     if detect['result']:
