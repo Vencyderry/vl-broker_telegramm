@@ -31,18 +31,13 @@ async def mstats(message: Message) -> None:
 
         system = get_system()
         users = get_users_all()
-        if "-m" in message.text.unwrap():
-            stats = f"""
-ℹ️ Информация о боте:
 
-📨 ID чата: {message.chat.id}
-"""
-        else:
-            stats = f"""
+        stats = f"""
 ℹ️ Информация о боте:
 
 ⏱️ Аптайм:{time_converter(time.time() - system.start_time, 0)}
 👥 Пользователей в базе: {digit(len(users))}
+🧾 ID чата: {message.chat.id}
 
 📨 Статистика обработки ивентов:
 ▶ Команд за сессию: {digit(system.commands_processed)}
