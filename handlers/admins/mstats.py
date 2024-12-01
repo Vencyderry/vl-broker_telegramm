@@ -22,7 +22,7 @@ executor = DispatchExecutor(title="mstatistics",
                             )
 
 
-@dp.message(Command(["/mstats"]))
+@dp.message(Command(["mstats"]))
 async def mstats(message: Message) -> None:
     try:
         if not is_admin(message.from_.unwrap().id):
