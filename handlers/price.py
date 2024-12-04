@@ -20,21 +20,22 @@ PRICE = f"""
 
 {HTMLFormatter(bold("Комплексное решение для автомобилей:"))}
 {HTMLFormatter(escape("*️⃣таможенное оформление автомобиля на физическое лицо — "))}{HTMLFormatter(bold("29 000 ₽"))}
-{HTMLFormatter(escape("*️⃣таможенное оформление автомобиля на физическое лицо — "))}{HTMLFormatter(italic("27 000 ₽*"))}
+{HTMLFormatter(escape("*️⃣таможенное оформление автомобиля на физическое лицо — "))}{HTMLFormatter(italic("25 000 ₽*"))}
 {HTMLFormatter(escape("*️⃣таможенное оформление автомобиля на юридическое лицо — "))}{HTMLFormatter(bold("79 000 ₽"))}
 {HTMLFormatter(italic(escape("ВАЖНО! Стоимость размещения автомобиля на складе временного хранения зависит от тарифов СВХ, сторонней организации; от 32 000 ₽")))}
 {HTMLFormatter(italic(escape("ВАЖНО! Вывоз автомобиля с СВХ в лабораторию в услугу по оформлению документов СБКТС и ЭПТС не входит. Данную услугу предоставляем дополнительно, цена: 5 500 ₽")))}
-
+ 
 {HTMLFormatter(bold("Комплексное решение для мотоциклов:"))}
 {HTMLFormatter(escape("*️⃣таможенное оформление мотоцикла — "))}{HTMLFormatter(bold("24 000 ₽"))}
-{HTMLFormatter(escape("*️⃣таможенное оформление мотоцикла — "))}{HTMLFormatter(italic("22 000 ₽*"))}
+{HTMLFormatter(escape("*️⃣таможенное оформление мотоцикла — "))}{HTMLFormatter(italic("20 000 ₽*"))}
 {HTMLFormatter(italic(escape("ВАЖНО! Стоимость размещения мотоцикла на складе временного хранения зависит от тарифов СВХ, сторонней организации; от 15 000 ₽")))}
 
 {HTMLFormatter(bold("Услуги по таможенному оформлению:"))}
 {HTMLFormatter(escape("*️⃣таможенное оформление автомобиля на физическое лицо — "))}{HTMLFormatter(bold("9 000 ₽"))}
-{HTMLFormatter(escape("*️⃣таможенное оформление автомобиля на физическое лицо — "))}{HTMLFormatter(italic("7 000 ₽*"))}
+{HTMLFormatter(escape("*️⃣таможенное оформление автомобиля на физическое лицо — "))}{HTMLFormatter(italic("5 000 ₽*"))}
 {HTMLFormatter(escape("*️⃣таможенное оформление автомобиля на юридическое лицо — "))}{HTMLFormatter(bold("18 000 ₽"))}
 {HTMLFormatter(escape("*️⃣таможенное оформление мотоцикла — "))}{HTMLFormatter(bold("9 000 ₽"))}
+{HTMLFormatter(escape("*️⃣таможенное оформление мотоцикла — "))}{HTMLFormatter(bold("5 000 ₽*"))}
 {HTMLFormatter(escape("*️⃣таможенное оформление спецтехники — "))}{HTMLFormatter(bold("рассчитывается индивидуально"))}
 {HTMLFormatter(escape("*️⃣таможенное оформление прочих грузов — "))}{HTMLFormatter(bold("рассчитывается индивидуально"))}
 {HTMLFormatter(escape("*️⃣таможенное оформление декларации на товары — "))}{HTMLFormatter(bold("от 15 000 ₽"))}
