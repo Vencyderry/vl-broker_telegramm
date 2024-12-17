@@ -1,7 +1,9 @@
 from playhouse.migrate import *
+import os
 
-
-db = SqliteDatabase('vlb_tg.db')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(BASE_DIR, 'vlb_tg.db')
+db = SqliteDatabase(db_path)
 
 
 class BaseModel(Model):
