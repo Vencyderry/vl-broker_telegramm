@@ -466,16 +466,8 @@ async def calculator_auto_finish(message: Message) -> None:
         if response_api:
             try:
                 response_api = decode(response_api)
-                response = await api.send_message(text=f"Расчёт таможенных платежей:\n"
-                                                       f"🔹Сборы за таможенное оформление: {digit(response_api['fees'])} ₽\n"
-                                                       f"🔹Пошлина: {digit(response_api['duty'])} ₽\n"
-                                                       f"🔹НДС: {digit(response_api['nds'])} ₽\n"
-                                                       f"🔹Итог: {digit(response_api['custom'])} ₽\n\n"
-                                                       f"🔹Утилизационный сбор: {digit(response_api['util'])} ₽\n"
-                                                       f"🔹Итог с утильсбором: {digit(round(response_api['custom'] + response_api['util']))} ₽\n\n"
-                                                       f"📌 Расчёты являются предварительными и необходимы для того, чтобы "
-                                                       f"сориентировать Вас. За более достоверным расчётом оставьте заявку или обратитесь к нашему менеджеру.\n\n"
-                                                       f"Наши специалисты проконсультируют Вас!",
+                text = await Calculator.result(message.chat.id, response_api)
+                response = await api.send_message(text=text,
                                                   chat_id=message.chat.id)
             except KeyError:
                 response = await api.send_message(

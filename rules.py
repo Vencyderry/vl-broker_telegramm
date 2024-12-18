@@ -13,7 +13,7 @@ from telegrinder.tools import italic, escape, HTMLFormatter
 
 from typing import List, Any, Coroutine, Tuple, Optional
 from client import ctx, client
-from tools import decode
+from tools import decode, digit
 
 
 class CallbackDataEqs(CallbackQueryDataRule):
@@ -140,6 +140,31 @@ class Calculator:
     @staticmethod
     async def delete(target: int) -> None:
         ctx.delete(f"calculator_state:{target}")
+
+    @staticmethod
+    async def result(target: int, data: dict) -> str:
+        calculator = ctx.get(f"calculator_{target}")
+        text = (
+            f"Расчёт таможенных платежей:\n"
+            f"🔹Сборы за таможенное оформление: {digit(data['fees'])} ₽\n"
+            f"🔹Пошлина: {digit(data['duty'])} ₽\n"
+            f"🔹НДС: {digit(data['nds'])} ₽\n"
+            f"REPLACE_EXCISE\n"
+            f"🔹Итог: {digit(data['custom'])} ₽\n\n"
+            f"🔹Утилизационный сбор: {digit(data['util'])} ₽\n"
+            f"🔹Итог с утильсбором: {digit(round(data['custom'] + data['util']))} ₽\n\n"
+            f"📌 Расчёты являются предварительными и необходимы для того, чтобы "
+            f"сориентировать Вас. За более достоверным расчётом оставьте заявку или обратитесь к нашему менеджеру.\n\n"
+            f"Наши специалисты проконсультируют Вас!"
+        )
+
+        if calculator["fiz"] == 0 or (calculator["fiz"] == 1 and (calculator['hybrid'] == 0 or calculator['engine'] == "e")):
+            replace_excise = f"🔹Акциз: {digit(data['excise'])} ₽\n"
+        else:
+            replace_excise = ""
+
+        text = text.replace("REPLACE_EXCISE\n", replace_excise)
+        return text
 
     STRATEGY = "strategy"
     MOTO = "moto"
