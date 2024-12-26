@@ -10,6 +10,7 @@ from models import User
 from tools import digit, time_converter
 from config import USERS_CHAT
 
+from telegrinder.types import Nothing
 from telegrinder import InlineKeyboard, InlineButton, Dispatch, Message
 from telegrinder.rules import Text, IsPrivate, Command
 
@@ -32,12 +33,19 @@ async def mstats(message: Message) -> None:
         system = get_system()
         users = get_users_all()
 
+        file_id = "None"
+        if message.reply_to_message is not Nothing and message.reply_to_message.unwrap().document is not Nothing:
+            file_id = message.reply_to_message.unwrap().document.unwrap().file_id
+
         stats = f"""
 ℹ️ Информация о боте:
 
 ⏱️ Аптайм:{time_converter(time.time() - system.start_time, 0)}
 👥 Пользователей в базе: {digit(len(users))}
+
+✈️ Данные telegram:
 🧾 ID чата: {message.chat.id}
+🧾 ID File: {file_id}
 
 📨 Статистика обработки ивентов:
 ▶ Команд за сессию: {digit(system.commands_processed)}
