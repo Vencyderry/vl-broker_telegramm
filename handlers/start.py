@@ -4,7 +4,7 @@ from client import api
 from operations import get_user
 from models import User
 
-from telegrinder import InlineKeyboard, InlineButton, Dispatch, Message
+from telegrinder import InlineKeyboard, InlineButton, Dispatch, Message, Keyboard, Button
 from telegrinder.rules import Text, IsPrivate
 from handlers.executor import ExecutorType, DispatchExecutor
 
@@ -25,6 +25,22 @@ kb = (
     .add(InlineButton("Правила чата VL-BROKER", callback_data="rules")).row()
     .add(InlineButton("Перейти в чат VL-BROKER", url="https://t.me/+k9w6qxLAOiEwMWJi"))
 ).get_markup()
+
+# kb = (
+#     Keyboard()
+#     .add(Button("Оставить заявку")).row()
+#     .add(Button("Открыть прайс-лист 2024")).row()
+#     .add(Button("Узнать о специальных предложениях")).row()
+#     .add(Button("Узнать информацию о СВХ")).row()
+#     .add(Button("Узнать дату выпуска авто")).row()
+#     .add(Button("Узнать курс валют")).row()
+#     .add(Button("Открыть калькулятор")).row()
+#     .add(Button("Смотреть полезные видео")).row()
+#     .add(Button("Войти в личный кабинет")).row()
+#     .add(Button("Узнать ответы на частые вопросы",)).row()
+#     .add(Button("Правила чата VL-BROKER")).row()
+#     .add(Button("Перейти в чат VL-BROKER"))
+# ).get_markup()
 
 executor = DispatchExecutor(title="start",
                             type_executor=ExecutorType.COMMAND

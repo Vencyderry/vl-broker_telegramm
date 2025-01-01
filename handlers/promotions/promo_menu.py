@@ -12,7 +12,7 @@ dp = Dispatch()
 
 PROMO_KEYBOARD = (
     InlineKeyboard()
-    .add(InlineButton("Новогоднее предложение от VL-BROKER", callback_data="promo_0")).row()
+    # .add(InlineButton("Новогоднее предложение от VL-BROKER", callback_data="promo_0")).row()
     .add(InlineButton("Подарок ко дню рождения", callback_data="promo_1")).row()
 ).get_markup()
 
